@@ -24,6 +24,7 @@ const ProductCard = ({
           handleEditClick={handleEditClick}
           handleDeleteClick={handleDeleteClick}
           handleFormDelete={handleFormDelete}
+          findCategory={findCategory}
         />
 
         <ProductCardEdit

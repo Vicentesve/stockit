@@ -15,6 +15,7 @@ const ProductCardRead = ({
   handleEditClick,
   handleDeleteClick,
   handleFormDelete,
+  findCategory,
 }) => {
   const PopupDelete = () => (
     <Popup
@@ -55,7 +56,7 @@ const ProductCardRead = ({
           </h5>
         </div>
         <p className="text-lg font-light text-gray-500 md:text-xl dark:text-gray-400">
-          {product?.category}
+          {findCategory(product?.category)}
         </p>
         <span className="text-3xl font-bold text-gray-900 dark:text-white">
           {currencyFormat(product?.price)}
