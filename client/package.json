@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "homepage": "https://stockit-jade.vercel.app",
+  "homepage": "https://stockit-theta.vercel.app/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
