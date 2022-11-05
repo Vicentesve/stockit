@@ -22,9 +22,9 @@ module.exports.getMyWarehouse = async (req, res) => {
       },
     ]);
 
-    warehouse[0]?.products?.map((product) => {
+    /* warehouse[0]?.products?.map((product) => {
       product.price = parseFloat(product.price);
-    });
+    }); */
 
     warehouse[0]?.products?.reverse();
 

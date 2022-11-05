@@ -59,9 +59,12 @@ const ReadOnlyRow = ({
         }
 
         if (columnItem?.type === "number") {
+          console.log(rowItem[columnItem?.value].$numberDecimal);
           return (
             <td className="px-6 py-4" key={`${rowIndex}_${columnItem?.value}`}>
-              {currencyFormat(rowItem[columnItem?.value])}
+              {currencyFormat(
+                parseFloat(rowItem[columnItem?.value].$numberDecimal)
+              )}
             </td>
           );
         }

@@ -108,7 +108,7 @@ const Warehouse = () => {
         )}
       </div>
       {/* Table max-width: 640px*/}
-      <div className="space-y-5 sm:hidden">
+      {/* <div className="space-y-5 sm:hidden">
         {isLoading ? (
           <SkeletonTableMobile />
         ) : (
@@ -122,7 +122,7 @@ const Warehouse = () => {
             onSubmitDelete={deleteProduct}
           />
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
