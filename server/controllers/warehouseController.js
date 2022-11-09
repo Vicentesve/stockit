@@ -6,6 +6,17 @@ const Warehouse = require("../models/Warehouse");
  * * @routes      GET      /getMyWarehouse/:id
  * * @access      Private
  */
+function formatBytes(bytes, decimals = 2) {
+  if (bytes === 0) return "0 Bytes";
+
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+}
 module.exports.getMyWarehouse = async (req, res) => {
   try {
     const warehouse = await Warehouse.aggregate([
@@ -22,6 +33,9 @@ module.exports.getMyWarehouse = async (req, res) => {
       },
     ]);
 
+    const responseSize = Buffer.byteLength(JSON.stringify(warehouse), "utf-8");
+    console.log("FINAL Response", responseSize, formatBytes(responseSize));
+
     /* warehouse[0]?.products?.map((product) => {
       product.price = parseFloat(product.price);
     }); */
@@ -34,6 +48,7 @@ module.exports.getMyWarehouse = async (req, res) => {
       products: warehouse[0]?.products,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).send({ error });
   }
 };
@@ -63,9 +78,10 @@ module.exports.addProduct = async (req, res) => {
       name: product.name,
       description: product.description,
       category: product.category,
-      price: parseFloat(product.price),
+      price: product.price,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).send({ error });
   }
 };
@@ -93,7 +109,14 @@ module.exports.editProduct = async (req, res) => {
       }
     );
 
-    res.status(200).json(req.body);
+    res.status(200).json({
+      _id: req.body._id,
+      image: req.body.image,
+      name: req.body.name,
+      description: req.body.description,
+      category: req.body.category,
+      price: { $numberDecimal: req.body.price },
+    });
   } catch (error) {
     res.status(400).send({ error });
   }

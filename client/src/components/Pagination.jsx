@@ -6,6 +6,7 @@ const Pagination = ({
   pageNeighbours,
   onPageChanged,
   currentPage,
+  scrollToTop,
 }) => {
   const totalPages = Math.ceil(totalRecords / pageLimit);
   const LEFT_PAGE = "LEFT";
@@ -76,6 +77,7 @@ const Pagination = ({
   };
 
   const goToPage = (page) => {
+    scrollToTop();
     const currentPage = Math.max(0, Math.min(page, totalPages));
 
     onPageChanged(currentPage);
@@ -87,11 +89,13 @@ const Pagination = ({
 
   const handleMoveRight = (evt) => {
     evt.preventDefault();
+
     goToPage(currentPage + pageNeighbours * 2 + 1);
   };
 
   const handleMoveLeft = (evt) => {
     evt.preventDefault();
+
     goToPage(currentPage - pageNeighbours * 2 - 1);
   };
 

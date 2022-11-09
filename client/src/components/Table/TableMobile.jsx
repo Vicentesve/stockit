@@ -1,9 +1,11 @@
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import React, { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import Pagination from "../Pagination";
-import ProductCard from "../ProductCard";
 import ProductCardAdd from "../ProductCardAdd";
+import ProductCardEdit from "../ProductCardEdit";
+import ProductCardRead from "../ProductCardRead";
 
 const TableMobile = ({
   data,
@@ -15,6 +17,31 @@ const TableMobile = ({
 }) => {
   const dispatch = useDispatch();
 
+  const [formData, setFormData] = useState({
+    image: [
+      {
+        product_img_url:
+          "https://flowbite.com/docs/images/examples/image-1@2x.jpg",
+      },
+    ],
+    name: "",
+    price: "",
+    category: "0",
+    description: "",
+  });
+
+  const [errors, setErrors] = useState({
+    image: "",
+    name: "",
+    price: "",
+    category: "0",
+    description: "",
+  });
+
+  const onChangeImage = (imageList) => {
+    setFormData({ ...formData, image: imageList });
+  };
+
   /**
    * * Pagination variables
    */
@@ -23,17 +50,6 @@ const TableMobile = ({
   const indexOfLastRecord = currentPage * recordsPerPage; // First record on the current page.
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage; // Last record on the current page.
   const currentRecords = data?.slice(indexOfFirstRecord, indexOfLastRecord); // Records to be displayed on the current page
-
-  /**
-   * * Scroll to top variables
-   */
-  const divRef = useRef(null);
-  const scrollToTop = () => {
-    divRef.current.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
 
   /**
    * * FormData variables & addMode and editMode
@@ -50,20 +66,20 @@ const TableMobile = ({
   /**
    * * Function to know which card is en edit mode
    */
-  const handleEditClick = (id) => {
+  const handleEditClick = (product) => {
+    console.log(product);
     setAddModeId(false); // Set the addMode to false
-    setEditModeId(id); // Set the editMode to de _id to edit
+    setEditModeId(product?._id);
   };
   /**
    * * Function to know which card is on delete mode
    */
-  const handleDeleteClick = (data) => {
+  const handleDeleteClick = () => {
     setAddModeId(false);
     setEditModeId(false);
   };
 
   const handleFormDelete = (formData) => {
-    console.log(formData);
     dispatch(onSubmitDelete(formData));
   };
 
@@ -73,17 +89,36 @@ const TableMobile = ({
   const handleAddClick = () => {
     setAddModeId(true);
     setEditModeId(null);
-    scrollToTop();
   };
 
+  /**
+   * * Function to find the category base on the id
+   * @param {*} idCategory
+   * @returns
+   */
   const findCategory = (idCategory) => {
     const objIndex = options.findIndex((obj) => obj._id === idCategory);
     return options[objIndex]?.name;
   };
 
+  /**
+   * * Function to submit data
+   */
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    /* console.log(data); */
+    /* data.price = data.price.replace("$", "").replaceAll(",", "");
+    dispatch(onSubmitAdd(data));
+    handleCancelClick(); */
+  };
+
   return (
     <div className="relative">
-      <div ref={divRef} className="sticky top-0 flex justify-between">
+      <div
+        className={`flex ${
+          currentRecords?.length > 0 ? "justify-between" : " justify-end"
+        }`}
+      >
         {/* Pagination */}
         <Pagination
           totalRecords={data?.length}
@@ -104,26 +139,48 @@ const TableMobile = ({
       {addModeId ? (
         <ProductCardAdd
           options={options}
+          formData={formData}
+          errors={errors}
+          onChangeImage={onChangeImage}
           handleCancelClick={handleCancelClick}
-          onSubmitAdd={onSubmitAdd}
+          handleAddClick={handleAddClick}
+          handleFormSubmit={handleFormSubmit}
         />
       ) : null}
 
-      {currentRecords?.map((record, i) => (
-        <div key={i} className="flex flex-col items-center space-y-5">
-          <ProductCard
-            product={record}
-            editModeId={editModeId}
-            findCategory={findCategory}
-            handleEditClick={handleEditClick}
-            handleCancelClick={handleCancelClick}
-            options={options}
-            onSubmitEdit={onSubmitEdit}
-            handleDeleteClick={handleDeleteClick}
-            handleFormDelete={handleFormDelete}
-          />
-        </div>
-      ))}
+      {currentRecords?.length > 0 ? (
+        <>
+          {currentRecords?.map((record, i) => (
+            <div key={i} className="flex flex-col items-center space-y-5">
+              <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-md h-[650px] dark:bg-gray-800 dark:border-gray-700 group perspective my-5 ">
+                <div
+                  className={`relative w-full h-full duration-700 preserve-3d ${
+                    editModeId === record?._id ? "my-rotate-y-180" : ""
+                  }`}
+                >
+                  <ProductCardRead
+                    product={record}
+                    handleEditClick={handleEditClick}
+                    handleDeleteClick={handleDeleteClick}
+                    handleFormDelete={handleFormDelete}
+                    findCategory={findCategory}
+                  />
+
+                  {!addModeId ? (
+                    <ProductCardEdit
+                      handleCancelClick={handleCancelClick}
+                      options={options}
+                      product={record}
+                    />
+                  ) : null}
+                </div>
+              </div>
+            </div>
+          ))}
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

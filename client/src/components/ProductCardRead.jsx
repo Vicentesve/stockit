@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import Popup from "reactjs-popup";
 import Modal from "./Modal";
 
@@ -14,9 +15,14 @@ const ProductCardRead = ({
   product,
   handleEditClick,
   handleDeleteClick,
-  handleFormDelete,
   findCategory,
+  onSubmitDelete,
 }) => {
+  const dispatch = useDispatch();
+
+  const handleFormDelete = () => {
+    dispatch(onSubmitDelete(product));
+  };
   const PopupDelete = () => (
     <Popup
       modal
@@ -59,7 +65,7 @@ const ProductCardRead = ({
           {findCategory(product?.category)}
         </p>
         <span className="text-3xl font-bold text-gray-900 dark:text-white">
-          {currencyFormat(product?.price)}
+          {currencyFormat(parseFloat(product?.price?.$numberDecimal))}
         </span>
         <p className="text-sm font-light text-gray-500 dark:text-gray-400 line-clamp-4">
           {product?.description}
@@ -70,7 +76,7 @@ const ProductCardRead = ({
         {PopupDelete()}
         <button
           type="button"
-          onClick={() => handleEditClick(product?._id)}
+          onClick={() => handleEditClick(product)}
           className="w-[80px] text-white bg-blue-700 hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Edit

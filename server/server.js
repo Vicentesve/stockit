@@ -4,6 +4,7 @@ const colors = require("colors");
 const cors = require("cors");
 const path = require("path");
 const connectDB = require("./db");
+const generateData = require("./generateData");
 
 const port = process.env.PORT || 5000;
 const authRoutes = require("./routes/authRoutes");
@@ -17,6 +18,7 @@ if (process.env.NODE_ENV !== "production") {
 
 //Connect to the database
 connectDB();
+generateData();
 
 //Init app
 const app = express();

@@ -8,7 +8,6 @@ export const sidenavSlice = createSlice({
   },
   reducers: {
     setIsOpen: (state) => {
-      console.log(state);
       state.value = !state.value;
     },
     setSubSideNav: (state, action) => {

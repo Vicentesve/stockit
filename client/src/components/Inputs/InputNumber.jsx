@@ -1,15 +1,7 @@
 import React from "react";
-import { Controller } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 
-const InputNumber = ({
-  id,
-  errors,
-  label,
-  placeholder,
-  validation,
-  control,
-}) => {
+const InputNumber = ({ id, errors, label, placeholder, value, onChange }) => {
   return (
     <div className="relative w-full">
       <label
@@ -18,22 +10,15 @@ const InputNumber = ({
       >
         {label}
       </label>
-      <Controller
-        control={control}
+      <NumericFormat
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         name={id}
-        render={({ field: { onChange, name, value } }) => (
-          <NumericFormat
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            name={name}
-            value={value}
-            onChange={onChange}
-            thousandSeparator=","
-            decimalSeparator="."
-            prefix="$"
-            placeholder={placeholder}
-          />
-        )}
-        rules={validation}
+        value={value}
+        onChange={onChange}
+        thousandSeparator=","
+        decimalSeparator="."
+        prefix="$"
+        placeholder={placeholder}
       />
 
       <span className="absolute text-xs font-medium text-red-600 dark:text-red-400">

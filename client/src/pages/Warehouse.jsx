@@ -83,15 +83,26 @@ const Warehouse = () => {
       {isLoading ? (
         <SkeletonTitle />
       ) : (
-        <h3 className="mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-4xl dark:text-white">
+        <h3 className="text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-4xl dark:text-white">
           {warehouse?.name}
           <p className="text-base font-light text-gray-500 dark:text-gray-400">
             {warehouse?._id}
           </p>
         </h3>
       )}
+
+      <Table
+        columns={columns}
+        data={warehouse?.products}
+        options={categories}
+        itemsPerPage={3}
+        isLoading={isLoading}
+        onSubmitAdd={addProduct}
+        onSubmitEdit={editProduct}
+        onSubmitDelete={deleteProduct}
+      />
       {/* Table min-width: 640px*/}
-      <div className="flex-col flex-grow hidden sm:flex">
+      {/* <div className="flex flex-col flex-grow">
         {isLoading ? (
           <TableSkeleton columns={columns} data={dataSkeleton} />
         ) : warehouse ? (
@@ -102,16 +113,17 @@ const Warehouse = () => {
             onSubmitEdit={editProduct}
             onSubmitAdd={addProduct}
             onSubmitDelete={deleteProduct}
+            options={categories}
           />
         ) : (
           <NoInternet />
         )}
-      </div>
+      </div> */}
       {/* Table max-width: 640px*/}
-      {/* <div className="space-y-5 sm:hidden">
+      {/* <div className="flex flex-col flex-grow space-y-5 sm:hidden">
         {isLoading ? (
           <SkeletonTableMobile />
-        ) : (
+        ) : warehouse ? (
           <TableMobile
             columns={columns}
             data={warehouse?.products}
@@ -121,6 +133,8 @@ const Warehouse = () => {
             onSubmitAdd={addProduct}
             onSubmitDelete={deleteProduct}
           />
+        ) : (
+          <NoInternet />
         )}
       </div> */}
     </div>

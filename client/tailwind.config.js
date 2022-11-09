@@ -25,6 +25,9 @@ module.exports = {
         black_rgba: "rgba(0, 0, 0, 0.7)",
         black_rgba_dark: "rgba(0, 0, 0, 0.3)",
       },
+      backgroundImage: {
+        "welcome-image": "url('/public/images/warehouse_login.jpg')",
+      },
     },
   },
   plugins: [

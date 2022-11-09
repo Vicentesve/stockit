@@ -27,12 +27,12 @@ const ProductCard = ({
           findCategory={findCategory}
         />
 
-        <ProductCardEdit
+        {/* <ProductCardEdit
           data={product}
           handleCancelClick={handleCancelClick}
           options={options}
           onSubmitEdit={onSubmitEdit}
-        />
+        /> */}
       </div>
     </div>
   );

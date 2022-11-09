@@ -108,8 +108,8 @@ const FloatBar = () => {
           {/* Profile */}
           <div className="flex items-center pt-5 space-x-2 border-t border-gray-300 dark:border-slate-700">
             <img
-              src="/images/avatar.jpg"
-              className="object-contain h-10 rounded-full"
+              src={user?.profilePic}
+              className="object-cover w-10 h-10 rounded-full"
               alt=""
             />
             <p className="text-gray-500 dark:text-gray-200">

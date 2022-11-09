@@ -2,24 +2,30 @@ import React, { useState } from "react";
 import InputNumber from "./Inputs/InputNumber";
 import Select from "./Inputs/Select";
 import ImageUploading from "react-images-uploading";
-import { useForm } from "react-hook-form";
 import InputField from "./Inputs/InputField";
 import TextArea from "./Inputs/TextArea";
 import { useDispatch } from "react-redux";
 
-const ProductCardAdd = ({ data, options, onSubmitAdd, handleCancelClick }) => {
+const ProductCardAdd = ({
+  addFormData,
+  handleCancelClick,
+  errors,
+  columns,
+  onSubmitAdd,
+}) => {
   const dispatch = useDispatch();
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    control,
-    formState: { errors },
-  } = useForm({
-    mode: "onBlur",
-    defaultValues: data ? data : null,
-  });
 
+  const [formData, setFormData] = useState(addFormData);
+  const [formErrors, setFormErrors] = useState(errors);
+
+  const handleFormChange = (e) => {
+    e.preventDefault();
+
+    const newFormData = { ...formData };
+    newFormData[e.target.name] = e.target.value;
+
+    setFormData(newFormData);
+  };
   const [images, setImages] = useState([
     {
       product_img_url:
@@ -28,26 +34,79 @@ const ProductCardAdd = ({ data, options, onSubmitAdd, handleCancelClick }) => {
   ]);
   const onChangeImage = (imageList) => {
     setImages(imageList);
-    setValue("image", imageList[0].product_img_url);
-  };
 
-  /**
-   * * Function to submit data
-   */
-  const handleFormSubmit = (data) => {
-    data.price = parseFloat(data.price.replace("$", "").replaceAll(",", ""));
-    dispatch(onSubmitAdd(data));
+    const newFormData = { ...formData };
+    newFormData["image"] = imageList[0].product_img_url;
+    setFormData(newFormData);
+  };
+  const onChangeSelect = (e) => {
+    const newFormData = { ...formData };
+    newFormData[e.target.name].value = e.target.value;
+    setFormData(newFormData);
+  };
+  const handleValidation = () => {
+    let errors = {};
+    let isError = false;
+    // eslint-disable-next-line array-callback-return
+    columns.map((column) => {
+      if (formData[column.value] === "" && column.value !== "image") {
+        errors[column.value] = `Please, enter the ${column.value}`;
+        isError = true;
+      }
+
+      switch (column.type) {
+        case "text":
+          break;
+        case "number":
+          if (formData[column.value] === "") {
+            errors[column.value] = `Please, enter a  number`;
+            isError = true;
+          }
+          break;
+        case "select":
+          if (formData[column.value].value === "0") {
+            errors[column.value] = `Please, select a ${column.value}`;
+            isError = true;
+          }
+          break;
+        default:
+          break;
+      }
+    });
+
+    setFormErrors(errors);
+
+    return isError;
+  };
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    if (handleValidation()) return; // If there is an error, then return.
+
+    const dataToAdd = {
+      image: formData.image,
+      name: formData.name,
+      price: formData.price.toString(),
+      category: formData.category.value,
+      description: formData.description,
+    };
+
+    dataToAdd.price = parseFloat(
+      dataToAdd.price.replace("$", "").replaceAll(",", "")
+    );
+
+    dispatch(onSubmitAdd(dataToAdd));
+
     handleCancelClick();
   };
 
   return (
     <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-md h-[650px] dark:bg-gray-800 dark:border-gray-700  my-5 px-5 py-2">
-      <p className="font-light text-gray-500 dark:text-gray-400">
+      <p className="text-sm font-light text-gray-500 dark:text-gray-400">
         Complete the form to add a new product
       </p>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit(handleFormSubmit)} className="mt-5">
+      <form onSubmit={handleFormSubmit} className="mt-5">
         <ImageUploading
           value={images}
           onChange={onChangeImage}
@@ -77,73 +136,55 @@ const ProductCardAdd = ({ data, options, onSubmitAdd, handleCancelClick }) => {
             label="Product name"
             id="name"
             type="text"
+            value={formData.name}
+            onChange={handleFormChange}
             placeholder="Enter your name"
-            register={register}
-            validation={{
-              required: "Please, enter the name",
-            }}
-            errors={errors.name ? errors.name.message : ""}
+            errors={formErrors?.name}
           />
 
           <InputNumber
             id="price"
             label="Price"
-            control={control}
+            value={formData.price}
+            onChange={handleFormChange}
             placeholder="Enter the price"
-            validation={{
-              required: "Please, enter the price",
-              validate: {
-                greaterThan0: (value) =>
-                  parseFloat(value.replace("$", "")) > 0 ||
-                  "Should be greater than 0",
-              },
-            }}
-            setValue={setValue}
-            errors={errors.price ? errors.price.message : ""}
+            errors={formErrors?.price}
           />
 
           <Select
             id="category"
-            options={options}
+            options={addFormData.category.options}
             label="Category"
-            register={register}
-            validation={{
-              validate: {
-                hasCategory: (value) => {
-                  if (value === "0") return "Please, enter the category";
-                },
-              },
-            }}
-            errors={errors.category ? errors.category.message : ""}
+            value={formData.category.value}
+            onChange={onChangeSelect}
+            errors={formErrors?.category}
           />
 
           <TextArea
             id="description"
-            register={register}
-            validation={{
-              required: "Please, enter the description",
-            }}
-            errors={errors.description ? errors.description.message : ""}
+            value={formData.description}
+            onChange={handleFormChange}
+            errors={formErrors?.description}
             placeholder="Enter the description"
             rows={3}
             label="Description"
           />
+        </div>
 
-          <div className="flex justify-end space-x-5">
-            <button
-              type="button"
-              onClick={handleCancelClick}
-              className="w-[80px] px-3 py-2 text-sm font-medium text-white bg-red-700 rounded-lg focus:outline-none hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="w-[80px]  px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-            >
-              Save
-            </button>
-          </div>
+        <div className="flex justify-end mt-10 space-x-5">
+          <button
+            type="button"
+            onClick={handleCancelClick}
+            className="w-[80px] px-3 py-2 text-sm font-medium text-white bg-red-700 rounded-lg focus:outline-none hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="w-[80px]  px-3 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+          >
+            Save
+          </button>
         </div>
       </form>
     </div>
