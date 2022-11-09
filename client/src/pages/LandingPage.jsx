@@ -34,19 +34,21 @@ const LandingPage = () => {
 
   return (
     <div
-      className={`flex  h-full ${user?.settings?.theme === 2 ? "dark" : ""}`}
+      className={`sm:flex h-full ${user?.settings?.theme === 2 ? "dark" : ""}`}
     >
       {isLoading ? <Spinner /> : null}
       <Sidebar />
       <FloatBar />
+
       <div
-        className={`w-full min-h-screen overflow-hidden bg-white dark:bg-gray-800 ${
-          sideNavState.value ? "blur-sm" : " blur-0"
+        className={`top-0 right-0 w-full h-full sm:h-screen bg-gray-800 flex flex-col ${
+          sideNavState.value ? "fixed blur-sm" : ""
         }`}
       >
         <TopBar />
         <Outlet />
       </div>
+
       <ToastContainer
         position="top-right"
         autoClose={5000}

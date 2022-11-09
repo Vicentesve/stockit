@@ -35,12 +35,12 @@ const FloatBar = () => {
 
   return (
     <div
-      className={`fixed z-10 w-full h-full ease-in-out transition duration-300 ${
+      className={`fixed z-[80]  w-full h-full ease-in-out transition duration-300 overflow-y-scroll ${
         sideNavState.value ? "translate-x-0" : " -translate-x-full"
       }`}
     >
       <aside
-        className={`absolute flex flex-col justify-between h-screen p-5 bg-cyan-50 dark:bg-gray-900 w-[80%]`}
+        className={`absolute flex flex-col overflow-y-scroll overflow-x-hidden  justify-between h-screen p-5 bg-cyan-50 dark:bg-gray-900 w-[80%]`}
       >
         <div>
           <div className="flex justify-end text-gray-500 dark:text-gray-200">

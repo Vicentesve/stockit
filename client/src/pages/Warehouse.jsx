@@ -79,7 +79,7 @@ const Warehouse = () => {
   }, [dispatch, user]);
 
   return (
-    <div className="flex flex-col w-full h-full p-3 md:py-5 md:px-10">
+    <div className="flex flex-col w-full h-full p-3 md:py-5 md:px-10 ">
       {isLoading ? (
         <SkeletonTitle />
       ) : (
