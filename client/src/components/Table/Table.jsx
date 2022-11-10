@@ -181,9 +181,9 @@ const Table = ({
   };
 
   return (
-    <div className="flex flex-col h-full ">
+    <div className="flex flex-col h-full">
       {windowSize.innerWidth < 640 ? (
-        <div className="h-full">
+        <div className="h-full ">
           {isLoading ? (
             <SkeletonTableMobile />
           ) : (
