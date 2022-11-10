@@ -117,22 +117,26 @@ const ProductCardEdit = ({
           onChange={onChangeImage}
           dataURLKey="product_img_url"
         >
-          {({ onImageUpload }) => (
+          {({ onImageUpload, imageList }) => (
             // write your building UI
-            <div className="h-[120px] flex flex-col items-center space-y-3">
-              <img
-                src={images[0]["product_img_url"]}
-                alt=""
-                className="object-contain h-[80px] rounded-lg w-full"
-              />
-              <button
-                onClick={onImageUpload}
-                type="button"
-                className="px-2 py-1 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Change image
-              </button>
-            </div>
+            <>
+              {imageList.map((image, i) => (
+                <div className="h-[120px] flex flex-col items-center space-y-3">
+                  <img
+                    src={image["product_img_url"]}
+                    alt=""
+                    className="object-contain h-[80px] rounded-lg w-full"
+                  />
+                  <button
+                    onClick={onImageUpload}
+                    type="button"
+                    className="px-2 py-1 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    Change image
+                  </button>
+                </div>
+              ))}
+            </>
           )}
         </ImageUploading>
 
