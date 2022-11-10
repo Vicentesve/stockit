@@ -5,6 +5,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import ImageUploading from "react-images-uploading";
+import { useDispatch } from "react-redux";
 import InputFieldFloat from "../Inputs/InputFieldFloat";
 import InputNumber from "../Inputs/InputNumberFloat";
 import Select from "../Inputs/SelectFloat";
@@ -13,29 +14,103 @@ import TextArea from "../Inputs/TextAreaFloat";
 const AddRow = ({
   columns,
   addFormData,
-  handleFormChange,
   handleCancelClick,
-  setFormData,
   errors,
+  onSubmitAdd,
 }) => {
+  const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState(addFormData);
+  const [formErrors, setFormErrors] = useState(errors);
   const [images, setImages] = useState([]);
 
+  const handleFormChange = (e) => {
+    e.preventDefault();
+
+    const newFormData = { ...formData };
+    newFormData[e.target.name] = e.target.value;
+
+    setFormData(newFormData);
+  };
   const onChangeImage = (imageList) => {
     setImages(imageList);
 
-    const newFormData = { ...addFormData };
+    const newFormData = { ...formData };
     newFormData["image"] = imageList[0].product_img_url;
-
     setFormData(newFormData);
   };
-
-  const onChangeNumber = (value, name) => {
-    const newFormData = { ...addFormData };
-    newFormData[name] = value;
-
+  const onChangeSelect = (e) => {
+    const newFormData = { ...formData };
+    newFormData[e.target.name].value = e.target.value;
     setFormData(newFormData);
   };
+  const handleValidation = () => {
+    let errors = {};
+    let isError = false;
+    // eslint-disable-next-line array-callback-return
+    columns.map((column) => {
+      if (formData[column.value] === "" && column.value !== "image") {
+        errors[column.value] = `Please, enter the ${column.value}`;
+        isError = true;
+      }
 
+      switch (column.type) {
+        case "text":
+          break;
+        case "number":
+          if (formData[column.value] === "") {
+            errors[column.value] = `Please, enter a  number`;
+            isError = true;
+          }
+          break;
+        case "select":
+          if (formData[column.value].value === "0") {
+            errors[column.value] = `Please, select a ${column.value}`;
+            isError = true;
+          }
+          break;
+        default:
+          break;
+      }
+    });
+
+    setFormErrors(errors);
+
+    return isError;
+  };
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    if (handleValidation()) return; // If there is an error, then return.
+
+    let dataToAdd = {};
+
+    // eslint-disable-next-line array-callback-return
+    columns.map((column) => {
+      switch (column.type) {
+        case "text":
+        case "text-area":
+        case "image":
+          dataToAdd[column.value] = formData[column.value];
+          break;
+        case "select":
+          dataToAdd[column.value] = formData[column.value].value;
+          break;
+        case "number":
+          dataToAdd[column.value] = formData[column.value].toString();
+          dataToAdd[column.value] = parseFloat(
+            dataToAdd[column.value].replace("$", "").replaceAll(",", "")
+          );
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    dispatch(onSubmitAdd(dataToAdd));
+    handleCancelClick();
+  };
   const renderSwitch = (columnItem) => {
     switch (columnItem.type) {
       case "text":
@@ -43,9 +118,9 @@ const AddRow = ({
           <InputFieldFloat
             id={columnItem.value}
             type={columnItem.type}
-            value={addFormData[columnItem.value]}
+            value={formData[columnItem.value]}
             onChange={handleFormChange}
-            error={errors[columnItem.value]}
+            error={formErrors[columnItem.value]}
           />
         );
 
@@ -54,9 +129,9 @@ const AddRow = ({
           <TextArea
             id={columnItem.value}
             type={columnItem.type}
-            value={addFormData[columnItem.value]}
+            value={formData[columnItem.value]}
             onChange={handleFormChange}
-            error={errors[columnItem.value]}
+            error={formErrors[columnItem.value]}
           />
         );
 
@@ -64,9 +139,9 @@ const AddRow = ({
         return (
           <InputNumber
             id={columnItem.value}
-            value={addFormData[columnItem.value]}
-            onChange={onChangeNumber}
-            error={errors[columnItem.value]}
+            value={formData[columnItem.value]}
+            onChange={handleFormChange}
+            error={formErrors[columnItem.value]}
           />
         );
 
@@ -92,7 +167,7 @@ const AddRow = ({
                     alt=""
                   ></img>
                   <span className="dark:text-white absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-xs text-center cursor-pointer group-hover:opacity-80">
-                    Click to change the image
+                    Click to add an image
                   </span>
                 </div>
 
@@ -121,9 +196,9 @@ const AddRow = ({
             id={columnItem.value}
             options={columnItem.options}
             label={columnItem.label}
-            value={addFormData[columnItem.value]}
-            onChange={handleFormChange}
-            error={errors[columnItem.value]}
+            value={formData[columnItem.value].value}
+            onChange={onChangeSelect}
+            error={formErrors[columnItem.value]}
           />
         );
 
@@ -131,7 +206,6 @@ const AddRow = ({
         return <h1>No match</h1>;
     }
   };
-
   return (
     <tr className="bg-white border-white border-dashed border-y dark:bg-gray-800 dark:border-gray-700">
       {columns?.map((columnItem, i) => (
@@ -149,7 +223,7 @@ const AddRow = ({
           />
         </button>
 
-        <button type="submit">
+        <button type="button" onClick={handleFormSubmit}>
           <BookmarkSquareIcon className="h-5 cursor-pointer text-cyan-500 hover:text-cyan-400" />
         </button>
       </td>

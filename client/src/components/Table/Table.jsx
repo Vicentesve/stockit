@@ -1,10 +1,15 @@
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import Pagination from "../Pagination";
 import ProductCardAdd from "../ProductCardAdd";
 import ProductCardEdit from "../ProductCardEdit";
 import ProductCardRead from "../ProductCardRead";
 import SkeletonTableMobile from "./SkeletonTableMobile";
+import TableSkeleton from "./../TableSkeleton";
+import NoData from "../NoData";
+import ReadOnlyRow from "./ReadOnlyRow";
+import AddRow from "./AddRow";
+import EditableRow from "./EditableRow";
 
 const Table = ({
   columns,
@@ -15,6 +20,7 @@ const Table = ({
   onSubmitAdd,
   onSubmitEdit,
   onSubmitDelete,
+  dataSkeleton,
 }) => {
   /* BuildFormState */
   const buildFormState = () => {
@@ -33,7 +39,8 @@ const Table = ({
           };
           break;
         case "image":
-          formState[column.value] = "";
+          formState[column.value] =
+            "https://flowbite.com/docs/images/examples/image-1@2x.jpg";
           break;
         case "number":
           formState[column.value] = "";
@@ -119,8 +126,12 @@ const Table = ({
     window.scrollTo({
       top: 0,
       behavior: "smooth",
-      /* you can also use 'auto' behaviour
-         in place of 'smooth' */
+    });
+  };
+  const scrollToTopTable = () => {
+    divRef.current.scroll({
+      top: 0,
+      behavior: "smooth",
     });
   };
 
@@ -141,7 +152,7 @@ const Table = ({
   /**
    * * Function to enter in delete mode
    */
-  const handleDeleteClick = (data) => {
+  const handleDeleteClick = () => {
     setAddModeId(false);
     setEditModeId(false);
   };
@@ -152,7 +163,7 @@ const Table = ({
   const handleAddClick = () => {
     setAddModeId(true);
     /* setEditModeId(null); */
-    /* scrollToTop(); */
+    scrollToTopTable();
   };
 
   const handleCancelClick = () => {
@@ -170,9 +181,9 @@ const Table = ({
   };
 
   return (
-    <div className="relative">
+    <div className="flex flex-col h-full ">
       {windowSize.innerWidth < 640 ? (
-        <div>
+        <div className="h-full">
           {isLoading ? (
             <SkeletonTableMobile />
           ) : (
@@ -202,7 +213,6 @@ const Table = ({
                 <>
                   {currentRecords?.map((record, i) => (
                     <div
-                      ref={divRef}
                       key={i}
                       className="relative flex flex-col items-center space-y-5"
                     >
@@ -234,13 +244,93 @@ const Table = ({
                   ))}
                 </>
               ) : (
-                <></>
+                <NoData visible={addModeId} />
               )}
             </>
           )}
         </div>
       ) : (
-        <></>
+        <div className="h-full">
+          {isLoading ? (
+            <TableSkeleton columns={columns} data={dataSkeleton} />
+          ) : (
+            <div className="h-full">
+              <div className="flex justify-end p-2">
+                <button
+                  type="button"
+                  className="flex items-center space-x-2 button"
+                  onClick={handleAddClick}
+                >
+                  <PlusCircleIcon className="h-5" /> <span>Add product</span>
+                </button>
+              </div>
+
+              {currentRecords?.length > 0 ? (
+                <div className="relative border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
+                  <div
+                    ref={divRef}
+                    className="h-[450px] xl:h-[500px] 2xl:h-[650px] overflow-auto rounded-lg scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-thumb-gray-50 dark:scrollbar-thumb-gray-700"
+                  >
+                    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                      <thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                          {columns?.map((column, i) => (
+                            <th
+                              key={i}
+                              scope="col"
+                              className={`px-6 py-3 ${column.width}`}
+                            >
+                              {column.label}
+                            </th>
+                          ))}
+                          <th scope="col" className="px-6 py-3 w-[5%]">
+                            Actions
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {addModeId ? (
+                          <AddRow
+                            columns={columns}
+                            addFormData={buildFormState()}
+                            errors={buildFormErrors()}
+                            handleCancelClick={handleCancelClick}
+                            onSubmitAdd={onSubmitAdd}
+                          />
+                        ) : null}
+                        {currentRecords?.map((item, i) => (
+                          <Fragment key={i}>
+                            {editModeId === item?._id ? (
+                              <EditableRow
+                                id={item?._id}
+                                columns={columns}
+                                data={setFormState(item)}
+                                errors={buildFormErrors()}
+                                handleCancelClick={handleCancelClick}
+                                onSubmitEdit={onSubmitEdit}
+                              />
+                            ) : (
+                              <ReadOnlyRow
+                                rowIndex={i}
+                                rowItem={item}
+                                columns={columns}
+                                handleEditClick={handleEditClick}
+                                handleDeleteClick={handleDeleteClick}
+                                onSubmitDelete={onSubmitDelete}
+                              />
+                            )}
+                          </Fragment>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : (
+                <NoData visible={addModeId} />
+              )}
+            </div>
+          )}
+        </div>
       )}
 
       {/* Pagination */}

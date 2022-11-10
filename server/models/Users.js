@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
     settings: {
       theme: {
         type: Number,
-        default: 2,
+        default: 1,
       },
     },
   },

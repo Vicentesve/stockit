@@ -28,7 +28,7 @@ const ProductCardEdit = ({
   };
   const [images, setImages] = useState([
     {
-      product_img_url: data?.image,
+      product_img_url: formData?.image,
     },
   ]);
   const onChangeImage = (imageList) => {
@@ -107,7 +107,7 @@ const ProductCardEdit = ({
   return (
     <div className="absolute w-full h-full max-w-sm px-5 py-2 bg-white rounded-lg shadow-md my-rotate-y-180 backface-hidden dark:bg-gray-800">
       <p className="font-light text-gray-500 dark:text-gray-400">
-        Complete the form to add a new product
+        Complete the form to edit this product
       </p>
 
       {/* Form */}
@@ -130,7 +130,7 @@ const ProductCardEdit = ({
                 type="button"
                 className="px-2 py-1 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
-                Add image
+                Change image
               </button>
             </div>
           )}

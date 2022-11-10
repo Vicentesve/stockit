@@ -19,12 +19,12 @@ const SelectFloat = ({ options, label, value, onChange, id, error }) => {
             : "border-gray-300 dark:border-gray-600 dark:focus:border-blue-500 focus:border-blue-600"
         } 
         ${
-          value === 0
+          value === "0"
             ? "dark:text-gray-400 text-gray-900"
             : "dark:text-white text-black"
         }`}
       >
-        <option className="text-gray-400" defaultValue>
+        <option value="0" className="text-gray-400">
           Choose a {label}
         </option>
         {options.map((option) => (

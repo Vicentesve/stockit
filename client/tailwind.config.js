@@ -34,5 +34,6 @@ module.exports = {
     require("flowbite/plugin"),
     Myclass,
     require("@tailwindcss/line-clamp"),
+    require("tailwind-scrollbar")({ nocompatible: true }),
   ],
 };

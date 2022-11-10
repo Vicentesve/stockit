@@ -5,37 +5,120 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import ImageUploading from "react-images-uploading";
+import { useDispatch } from "react-redux";
 import InputFieldFloat from "../Inputs/InputFieldFloat";
 import InputNumber from "../Inputs/InputNumberFloat";
 import Select from "../Inputs/SelectFloat";
 import TextArea from "../Inputs/TextAreaFloat";
 
 const EditableRow = ({
-  editFormData,
-  handleCancelClick,
+  id,
   columns,
-  setEditFormData,
-  handleFormChange,
+  data,
   errors,
+  handleCancelClick,
+  onSubmitEdit,
 }) => {
-  const [images, setImages] = useState([]);
+  const dispatch = useDispatch();
 
+  const [formData, setFormData] = useState(data);
+  const [formErrors, setFormErrors] = useState(errors);
+  const [images, setImages] = useState([
+    {
+      product_img_url: formData?.image,
+    },
+  ]);
+
+  const handleFormChange = (e) => {
+    e.preventDefault();
+
+    const newFormData = { ...formData };
+    newFormData[e.target.name] = e.target.value;
+
+    setFormData(newFormData);
+  };
   const onChangeImage = (imageList) => {
     setImages(imageList);
 
-    const newFormData = { ...editFormData };
+    const newFormData = { ...formData };
     newFormData["image"] = imageList[0].product_img_url;
-
-    setEditFormData(newFormData);
+    setFormData(newFormData);
   };
-
-  const onChangeNumber = (value, name) => {
-    const newFormData = { ...editFormData };
-    newFormData[name] = value;
-
-    setEditFormData(newFormData);
+  const onChangeSelect = (e) => {
+    const newFormData = { ...formData };
+    newFormData[e.target.name].value = e.target.value;
+    setFormData(newFormData);
   };
+  const handleValidation = () => {
+    let errors = {};
+    let isError = false;
+    // eslint-disable-next-line array-callback-return
+    columns.map((column) => {
+      if (formData[column.value] === "" && column.value !== "image") {
+        errors[column.value] = `Please, enter the ${column.value}`;
+        isError = true;
+      }
 
+      switch (column.type) {
+        case "text":
+          break;
+        case "number":
+          if (formData[column.value] === "") {
+            errors[column.value] = `Please, enter a  number`;
+            isError = true;
+          }
+          break;
+        case "select":
+          if (formData[column.value].value === "0") {
+            errors[column.value] = `Please, select a ${column.value}`;
+            isError = true;
+          }
+          break;
+        default:
+          break;
+      }
+    });
+
+    setFormErrors(errors);
+
+    return isError;
+  };
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    if (handleValidation()) return; // If there is an error, then return.
+
+    let dataToEdit = {};
+
+    // eslint-disable-next-line array-callback-return
+    columns.map((column) => {
+      switch (column.type) {
+        case "text":
+        case "text-area":
+        case "image":
+          dataToEdit[column.value] = formData[column.value];
+          break;
+        case "select":
+          dataToEdit[column.value] = formData[column.value].value;
+          break;
+        case "number":
+          dataToEdit[column.value] = formData[column.value].toString();
+          dataToEdit[column.value] = parseFloat(
+            dataToEdit[column.value].replace("$", "").replaceAll(",", "")
+          );
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    //Put the id to the data to edit
+    dataToEdit._id = id;
+
+    dispatch(onSubmitEdit(dataToEdit));
+    handleCancelClick();
+  };
   const renderSwitch = (columnItem) => {
     switch (columnItem.type) {
       case "text":
@@ -43,9 +126,9 @@ const EditableRow = ({
           <InputFieldFloat
             id={columnItem.value}
             type={columnItem.type}
-            value={editFormData[columnItem.value]}
+            value={formData[columnItem.value]}
             onChange={handleFormChange}
-            error={errors[columnItem.value]}
+            error={formErrors[columnItem.value]}
           />
         );
 
@@ -54,9 +137,9 @@ const EditableRow = ({
           <TextArea
             id={columnItem.value}
             type={columnItem.type}
-            value={editFormData[columnItem.value]}
+            value={formData[columnItem.value]}
             onChange={handleFormChange}
-            error={errors[columnItem.value]}
+            error={formErrors[columnItem.value]}
           />
         );
 
@@ -64,9 +147,9 @@ const EditableRow = ({
         return (
           <InputNumber
             id={columnItem.value}
-            value={editFormData[columnItem.value]}
-            onChange={onChangeNumber}
-            error={errors[columnItem.value]}
+            value={formData[columnItem.value]}
+            onChange={handleFormChange}
+            error={formErrors[columnItem.value]}
           />
         );
 
@@ -121,9 +204,9 @@ const EditableRow = ({
             id={columnItem.value}
             options={columnItem.options}
             label={columnItem.label}
-            value={editFormData[columnItem.value]}
-            onChange={handleFormChange}
-            error={errors[columnItem.value]}
+            value={formData[columnItem.value].value}
+            onChange={onChangeSelect}
+            error={formErrors[columnItem.value]}
           />
         );
 
@@ -131,6 +214,7 @@ const EditableRow = ({
         return <h1>No match</h1>;
     }
   };
+
   return (
     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       {columns?.map((columnItem, i) => (
@@ -148,7 +232,7 @@ const EditableRow = ({
           />
         </button>
 
-        <button type="submit">
+        <button type="button" onClick={handleFormSubmit}>
           <BookmarkSquareIcon className="h-5 cursor-pointer text-cyan-500 hover:text-cyan-400" />
         </button>
       </td>

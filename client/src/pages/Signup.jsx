@@ -35,14 +35,14 @@ const Signup = () => {
   }, [user, isSuccess, navigate, dispatch]);
 
   return (
-    <div className="dark">
+    <div>
       {isLoading ? <Spinner /> : ""}
       <div className="flex flex-col h-full px-5 bg-gray-100 md:h-screen dark:bg-gray-900 md:px-10 lg:justify-center lg:items-center">
-        <div className="w-full border border-gray-200 rounded-md shadow-md lg:bg-white dark:border-transparent xl:w-[70%] lg:flex h-fit lg:dark:bg-gray-800">
+        <div className="w-full border border-gray-200 rounded-md shadow-md lg:bg-white dark:border-transparent xl:w-[70%] lg:flex h-fit 2xl:h-[70%] lg:dark:bg-gray-800">
           {/* Image */}
-          <div className="w-[50%] h-full overflow-hidden hidden lg:block rounded-l-md">
+          <div className="w-[50%] h-full overflow-hidden hidden lg:block rounded-l-md ">
             <img
-              className="object-cover h-full"
+              className="object-cover w-full h-full"
               src="/images/warehouse_login.jpg"
               alt=""
             />
@@ -53,7 +53,7 @@ const Signup = () => {
             className="lg:w-[50%] w-full lg:px-10"
           >
             <div className="mt-5">
-              <Logo />
+              <Logo nameInline />
             </div>
 
             {/* Welcome */}
@@ -94,6 +94,34 @@ const Signup = () => {
                   errors={errors.lastname ? errors.lastname.message : ""}
                 />
               </div>
+
+              <div className="space-y-5 lg:flex lg:space-x-5 md:space-y-0">
+                <InputField
+                  label="User"
+                  id="user"
+                  type="text"
+                  required
+                  placeholder="Enter your user"
+                  register={register}
+                  validation={{
+                    required: "Please, enter the user",
+                  }}
+                  errors={errors.user ? errors.user.message : ""}
+                />
+                <InputField
+                  label="Password"
+                  id="password"
+                  type="password"
+                  required
+                  placeholder="Enter your password"
+                  register={register}
+                  validation={{
+                    required: "Please, enter the password",
+                  }}
+                  errors={errors.password ? errors.password.message : ""}
+                />
+              </div>
+
               <InputField
                 label="Email"
                 id="email"
@@ -109,30 +137,6 @@ const Signup = () => {
                   },
                 }}
                 errors={errors.email ? errors.email.message : ""}
-              />
-              <InputField
-                label="User"
-                id="user"
-                type="text"
-                required
-                placeholder="Enter your user"
-                register={register}
-                validation={{
-                  required: "Please, enter the user",
-                }}
-                errors={errors.user ? errors.user.message : ""}
-              />
-              <InputField
-                label="Password"
-                id="password"
-                type="password"
-                required
-                placeholder="Enter your password"
-                register={register}
-                validation={{
-                  required: "Please, enter the password",
-                }}
-                errors={errors.password ? errors.password.message : ""}
               />
 
               <InputRadio
@@ -153,9 +157,9 @@ const Signup = () => {
 
             {/* Button & create account */}
             <div className="my-10">
-              <button className="button">Sign up</button>
+              <button className="w-full button ">Sign up</button>
               {/* Create an account */}
-              <p className="text-sm text-center text-gray-400 dark:text-gray-500">
+              <p className="mt-2 text-sm text-center text-gray-400 dark:text-gray-500">
                 Already have an account?{" "}
                 <a
                   className="font-semibold text-black dark:text-white hover:underline"

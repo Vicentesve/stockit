@@ -33,10 +33,10 @@ const Login = () => {
   }, [user, isSuccess, navigate, dispatch]);
 
   return (
-    <div className="">
+    <div>
       {isLoading ? <Spinner /> : ""}
-      <div className="flex flex-col h-screen px-5 py-5 lg:bg-gray-100 dark:bg-gray-900 md:px-10 lg:px-20 lg:justify-center lg:items-center">
-        <div className="lg:bg-white border-transparent border lg:border-gray-200 dark:border-transparent lg:shadow-md lg:flex lg:h-fit xl:h-[70%] xl:w-[60%] lg:dark:bg-gray-800 rounded-md mt-5">
+      <div className="flex flex-col w-full h-screen px-5 py-5 lg:bg-gray-100 dark:bg-gray-900 md:px-10 lg:px-20 lg:justify-center lg:items-center">
+        <div className="lg:bg-white border-transparent border lg:border-gray-200 dark:border-transparent lg:shadow-md  lg:flex lg:h-fit xl:w-[70%] 2xl:w-[60%] lg:dark:bg-gray-800 rounded-md mt-5">
           {/* Image */}
           <div className="w-[50%] h-full overflow-hidden hidden lg:block rounded-l-md">
             <img
@@ -100,7 +100,7 @@ const Login = () => {
 
             {/* Button & create account */}
             <div className="mt-10">
-              <button className="button">Login</button>
+              <button className="w-full button">Login</button>
               {/* Create an account */}
               <p className="text-sm text-center text-gray-400 dark:text-gray-500">
                 Dont have an account?{" "}

@@ -3,16 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import SkeletonTitle from "../components/SkeletonTitle";
 import Table from "../components/Table/Table";
 import { getCategories } from "../redux/categoriesSlice";
-import TableSkeleton from "./../components/TableSkeleton";
 import {
   editProduct,
   getMyWarehouse,
   addProduct,
   deleteProduct,
 } from "../redux/warehouseSlice";
-import NoInternet from "../components/NoInternet";
-import SkeletonTableMobile from "./../components/Table/SkeletonTableMobile";
-import TableMobile from "../components/Table/TableMobile";
 
 const Warehouse = () => {
   const dispatch = useDispatch();
@@ -79,7 +75,7 @@ const Warehouse = () => {
   }, [dispatch, user]);
 
   return (
-    <div className="flex flex-col w-full h-full p-3 md:py-5 md:px-10 ">
+    <div className="flex flex-col flex-grow w-full p-3 overflow-hidden md:py-5 md:px-10">
       {isLoading ? (
         <SkeletonTitle />
       ) : (
@@ -95,48 +91,13 @@ const Warehouse = () => {
         columns={columns}
         data={warehouse?.products}
         options={categories}
-        itemsPerPage={3}
+        itemsPerPage={20}
         isLoading={isLoading}
+        dataSkeleton={dataSkeleton}
         onSubmitAdd={addProduct}
         onSubmitEdit={editProduct}
         onSubmitDelete={deleteProduct}
       />
-      {/* Table min-width: 640px*/}
-      {/* <div className="flex flex-col flex-grow">
-        {isLoading ? (
-          <TableSkeleton columns={columns} data={dataSkeleton} />
-        ) : warehouse ? (
-          <Table
-            columns={columns}
-            data={warehouse?.products}
-            itemsPerPage={5}
-            onSubmitEdit={editProduct}
-            onSubmitAdd={addProduct}
-            onSubmitDelete={deleteProduct}
-            options={categories}
-          />
-        ) : (
-          <NoInternet />
-        )}
-      </div> */}
-      {/* Table max-width: 640px*/}
-      {/* <div className="flex flex-col flex-grow space-y-5 sm:hidden">
-        {isLoading ? (
-          <SkeletonTableMobile />
-        ) : warehouse ? (
-          <TableMobile
-            columns={columns}
-            data={warehouse?.products}
-            itemsPerPage={3}
-            options={categories}
-            onSubmitEdit={editProduct}
-            onSubmitAdd={addProduct}
-            onSubmitDelete={deleteProduct}
-          />
-        ) : (
-          <NoInternet />
-        )}
-      </div> */}
     </div>
   );
 };

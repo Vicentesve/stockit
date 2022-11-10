@@ -41,7 +41,7 @@ const LandingPage = () => {
       <FloatBar />
 
       <div
-        className={`top-0 right-0 w-full h-full sm:h-screen bg-gray-800 flex flex-col ${
+        className={`top-0 right-0 w-full h-screen dark:bg-gray-800 flex flex-col ${
           sideNavState.value ? "fixed blur-sm" : ""
         }`}
       >

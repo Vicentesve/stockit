@@ -10,7 +10,7 @@ import Logo from "./Logo";
 import NavLinkToolTip from "./Inputs/NavLinkToolTip";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setSubSideNav } from "../redux/sidenavSlice";
 
 const Sidebar = () => {
@@ -34,9 +34,11 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="overflow-y-scroll z-[90] overflow-x-hidden min-h-screen bg-cyan-50 dark:bg-gray-900 hidden p-5 md:flex flex-col items-center justify-between w-[10%] lg:w-[8%] xl:w-[7%] 2xl:w-[5%]">
+    <aside className="overflow-y-scroll md:overflow-hidden z-[90] overflow-x-hidden min-h-screen bg-cyan-50 dark:bg-gray-900 hidden p-5 md:flex flex-col items-center justify-between w-[10%] lg:w-[8%] xl:w-[7%] 2xl:w-[5%]">
       <div>
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
 
         {/* Modules */}
         <div className="flex flex-col p-2 mt-5 space-y-5">

@@ -1,5 +1,6 @@
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import React from "react";
+import { useDispatch } from "react-redux";
 import Popup from "reactjs-popup";
 import Modal from "../Modal";
 
@@ -9,14 +10,19 @@ const ReadOnlyRow = ({
   columns,
   handleEditClick,
   handleDeleteClick,
-  handleFormDelete,
+  onSubmitDelete,
 }) => {
+  const dispatch = useDispatch();
   const currencyFormat = (num) => {
     if (!isNaN(num)) {
       return "$" + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     } else {
       return num;
     }
+  };
+
+  const handleFormDelete = () => {
+    dispatch(onSubmitDelete(rowItem));
   };
 
   const PopupDelete = () => (
@@ -39,7 +45,7 @@ const ReadOnlyRow = ({
     </Popup>
   );
   return (
-    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+    <tr className="h-full bg-white border-b dark:bg-gray-800 dark:border-gray-700">
       {columns?.map((columnItem) => {
         if (columnItem.value === "image") {
           return (
@@ -61,7 +67,17 @@ const ReadOnlyRow = ({
         if (columnItem?.type === "number") {
           return (
             <td className="px-6 py-4" key={`${rowIndex}_${columnItem?.value}`}>
-              {rowItem[columnItem?.value].$numberDecimal}
+              {currencyFormat(
+                parseFloat(rowItem[columnItem?.value].$numberDecimal)
+              )}
+            </td>
+          );
+        }
+
+        if (columnItem?.type === "text-area") {
+          return (
+            <td className="px-6 py-4 " key={`${rowIndex}_${columnItem?.value}`}>
+              <p className=" line-clamp-4">{rowItem[columnItem?.value]}</p>
             </td>
           );
         }
