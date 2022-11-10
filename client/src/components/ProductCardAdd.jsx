@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import InputNumber from "./Inputs/InputNumber";
-import Select from "./Inputs/Select";
+import InputNumber from "./Table/InputNumberTable";
+import Select from "./Table/SelectTable";
 import ImageUploading from "react-images-uploading";
-import InputField from "./Inputs/InputField";
-import TextArea from "./Inputs/TextArea";
+import InputField from "./Table/InputFieldTable";
+import TextArea from "./Table/TextAreaTable";
 import { useDispatch } from "react-redux";
 
 const ProductCardAdd = ({

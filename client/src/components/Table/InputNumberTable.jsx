@@ -1,13 +1,13 @@
 import React from "react";
+import { NumericFormat } from "react-number-format";
 
-const InputField = ({
-  label,
+const InputNumberTable = ({
   id,
-  type,
-  placeholder,
   errors,
-  register,
-  validation,
+  label,
+  placeholder,
+  value,
+  onChange,
 }) => {
   return (
     <div className="relative w-full">
@@ -17,19 +17,22 @@ const InputField = ({
       >
         {label}
       </label>
-      <input
-        type={type}
-        id={id}
-        name={id}
-        {...register(id, validation)}
+      <NumericFormat
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        name={id}
+        value={value}
+        onChange={onChange}
+        thousandSeparator=","
+        decimalSeparator="."
+        prefix="$"
         placeholder={placeholder}
       />
-      <span className="absolute mt-1 text-xs font-medium text-red-600 dark:text-red-400">
+
+      <span className="absolute text-xs font-medium text-red-600 dark:text-red-400">
         {errors}
       </span>
     </div>
   );
 };
 
-export default InputField;
+export default InputNumberTable;

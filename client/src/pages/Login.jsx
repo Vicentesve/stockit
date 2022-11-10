@@ -58,7 +58,7 @@ const Login = () => {
                 Hi, Welcome Back!👋
               </h3>
               <p className="mt-1 text-gray-400 dark:text-gray-500">
-                Hello again, you´ve been missed!
+                Hello again, you've been missed!
               </p>
             </div>
 
