@@ -2,21 +2,92 @@ const { default: mongoose } = require("mongoose");
 const Warehouse = require("../models/Warehouse");
 
 /**
+ * * @description Get all the products of specific warehouse
+ * * @routes      GET      /getProductsByWarehouse/:id
+ * * @access      Public
+ */
+module.exports.getProductsByWarehouse = async (req, res) => {
+  try {
+    const warehouseProducts = await Warehouse.find({
+      _id: mongoose.Types.ObjectId(req.params.id),
+    });
+
+    res.status(200).json(warehouseProducts[0]?.products.reverse());
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ error });
+  }
+};
+
+/**
+ * * @description Get all the products of all warehouses
+ * * @routes      GET      /getWarehousesPreview/
+ * * @access      Public
+ */
+module.exports.getWarehousesPreview = async (req, res) => {
+  try {
+    const warehouses = await Warehouse.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "adminId",
+          foreignField: "_id",
+          pipeline: [
+            { $project: { name: 1, lastname: 1, email: 1, profilePic: 1 } },
+          ],
+          as: "admin",
+        },
+      },
+      {
+        $sample: { size: 4 },
+      },
+    ]).project({
+      name: 1,
+      products: {
+        $slice: ["$products.image", 4],
+      },
+    });
+
+    res.status(200).json(warehouses);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ error });
+  }
+};
+
+/**
+ * * @description Get all the products of specific category
+ * * @routes      GET      /getProductsByCategory/:id
+ * * @access      Public
+ */
+module.exports.getProductsByCategory = async (req, res) => {
+  try {
+    const warehouses = await Warehouse.aggregate([
+      {
+        $unwind: {
+          path: "$products",
+        },
+      },
+      {
+        $match: {
+          "products.category": mongoose.Types.ObjectId(req.params.id),
+        },
+      },
+    ]);
+
+    res.status(200).json(warehouses);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ error });
+  }
+};
+
+/**
  * * @description Get the warehouse of the user
  * * @routes      GET      /getMyWarehouse/:id
  * * @access      Private
  */
-function formatBytes(bytes, decimals = 2) {
-  if (bytes === 0) return "0 Bytes";
 
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-}
 module.exports.getMyWarehouse = async (req, res) => {
   try {
     const warehouse = await Warehouse.aggregate([
@@ -32,9 +103,6 @@ module.exports.getMyWarehouse = async (req, res) => {
         $match: { adminId: mongoose.Types.ObjectId(req.params.id) },
       },
     ]);
-
-    const responseSize = Buffer.byteLength(JSON.stringify(warehouse), "utf-8");
-    console.log("FINAL Response", responseSize, formatBytes(responseSize));
 
     /* warehouse[0]?.products?.map((product) => {
       product.price = parseFloat(product.price);

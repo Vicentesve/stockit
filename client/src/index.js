@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import "flowbite";
 import "react-toastify/dist/ReactToastify.css";
+import "reactjs-popup/dist/index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

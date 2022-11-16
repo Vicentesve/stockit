@@ -68,7 +68,7 @@ export const categoriesSlice = createSlice({
       .addCase(getCategories.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.categories = action.payload;
+        state.categories = action.payload.sort(() => Math.random() - 0.5);
       })
       .addCase(getCategories.rejected, (state, action) => {
         state.isLoading = false;

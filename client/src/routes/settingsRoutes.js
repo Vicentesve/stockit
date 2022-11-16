@@ -9,7 +9,7 @@ import Security from "../pages/Security";
 const subSideNavConfiguracion = {
   name: "Settings",
   submenus: [
-    { name: "My Warehouse", Icon: ArchiveBoxIcon },
+    { name: "My Warehouse Info", Icon: ArchiveBoxIcon },
     { name: "Account", Icon: Cog6ToothIcon },
     { name: "Security", Icon: KeyIcon },
     { name: "Appearence", Icon: PhotoIcon },
@@ -18,7 +18,7 @@ const subSideNavConfiguracion = {
 
 const subRoutesCatalogo = [
   {
-    path: "my-warehouse",
+    path: "my-warehouse-info",
     index: true,
 
     element: <MyWarehouseInfo />,

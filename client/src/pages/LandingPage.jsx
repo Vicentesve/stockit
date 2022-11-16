@@ -34,14 +34,16 @@ const LandingPage = () => {
 
   return (
     <div
-      className={`sm:flex h-full ${user?.settings?.theme === 2 ? "dark" : ""}`}
+      className={`flex flex-col min-h-screen sm:flex-row ${
+        user?.settings?.theme === 2 ? "dark" : ""
+      }`}
     >
       {isLoading ? <Spinner /> : null}
       <Sidebar />
       <FloatBar />
 
       <div
-        className={`top-0 right-0 w-full h-full sm:h-screen dark:bg-gray-800 flex flex-col ${
+        className={`flex flex-col flex-grow top-0 right-0 dark:bg-gray-800 ${
           sideNavState.value ? "fixed blur-sm" : ""
         }`}
       >

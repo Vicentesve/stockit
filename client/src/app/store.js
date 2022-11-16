@@ -3,6 +3,7 @@ import sidenavReducer from "../redux/sidenavSlice";
 import authReducer from "../redux/authSlice";
 import warehouseReducer from "../redux/warehouseSlice";
 import categorieReducer from "../redux/categoriesSlice";
+import storeReducer from "../redux/storeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     auth: authReducer,
     warehouse: warehouseReducer,
     categories: categorieReducer,
+    store: storeReducer,
   },
 });

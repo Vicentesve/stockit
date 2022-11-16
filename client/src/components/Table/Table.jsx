@@ -181,13 +181,13 @@ const Table = ({
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col flex-grow">
       {windowSize.innerWidth < 640 ? (
-        <div className="h-full ">
+        <div className="h-full overflow-hidden">
           {isLoading ? (
             <SkeletonTableMobile />
           ) : (
-            <>
+            <div className="h-full">
               <div className="flex justify-end">
                 <button
                   type="button"
@@ -230,14 +230,16 @@ const Table = ({
                             onSubmitDelete={onSubmitDelete}
                           />
 
-                          <ProductCardEdit
-                            id={record?._id}
-                            data={setFormState(record)}
-                            errors={buildFormErrors()}
-                            handleCancelClick={handleCancelClick}
-                            columns={columns}
-                            onSubmitEdit={onSubmitEdit}
-                          />
+                          {editModeId === record?._id ? (
+                            <ProductCardEdit
+                              id={record?._id}
+                              data={setFormState(record)}
+                              errors={buildFormErrors()}
+                              handleCancelClick={handleCancelClick}
+                              columns={columns}
+                              onSubmitEdit={onSubmitEdit}
+                            />
+                          ) : null}
                         </div>
                       </div>
                     </div>
@@ -246,11 +248,11 @@ const Table = ({
               ) : (
                 <NoData visible={addModeId} />
               )}
-            </>
+            </div>
           )}
         </div>
       ) : (
-        <div className="h-full">
+        <div className="h-full overflow-hidden">
           {isLoading ? (
             <TableSkeleton columns={columns} data={dataSkeleton} />
           ) : (

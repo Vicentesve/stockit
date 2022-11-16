@@ -30,15 +30,21 @@ const Signup = () => {
   useEffect(() => {
     if (isSuccess || user) {
       dispatch(reset());
-      navigate("/");
+      if (user?.hasWarehouse) {
+        navigate("/my-warehouse");
+      } else {
+        navigate("/");
+      }
     }
   }, [user, isSuccess, navigate, dispatch]);
+
+  console.log(errors);
 
   return (
     <div>
       {isLoading ? <Spinner /> : ""}
       <div className="flex flex-col h-full px-5 bg-gray-100 md:h-screen dark:bg-gray-900 md:px-10 lg:justify-center lg:items-center">
-        <div className="w-full border border-gray-200 rounded-md shadow-md lg:bg-white dark:border-transparent xl:w-[70%] lg:flex h-fit 2xl:h-[70%] lg:dark:bg-gray-800">
+        <div className="w-full border border-gray-200 rounded-md shadow-md lg:bg-white dark:border-transparent xl:w-[75%] lg:flex h-[80%]  lg:dark:bg-gray-800">
           {/* Image */}
           <div className="w-[50%] h-full overflow-hidden hidden lg:block rounded-l-md ">
             <img
@@ -57,13 +63,10 @@ const Signup = () => {
             </div>
 
             {/* Welcome */}
-            <div className="mt-5 mb-5">
+            <div className="mt-3 mb-5">
               <h3 className="dark:text-white font-semibold text-2xl tracking-[1px]">
                 Hi, Create an account!👋
               </h3>
-              <p className="mt-1 text-gray-400 dark:text-gray-500">
-                Please, enter your details!
-              </p>
             </div>
 
             {/* Inputs */}
@@ -97,16 +100,20 @@ const Signup = () => {
 
               <div className="space-y-5 lg:flex lg:space-x-5 md:space-y-0">
                 <InputField
-                  label="User"
-                  id="user"
+                  label="Email"
+                  id="email"
                   type="text"
                   required
-                  placeholder="Enter your user"
+                  placeholder="Enter your email"
                   register={register}
                   validation={{
-                    required: "Please, enter the user",
+                    required: "Please, enter the email",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email",
+                    },
                   }}
-                  errors={errors.user ? errors.user.message : ""}
+                  errors={errors.email ? errors.email.message : ""}
                 />
                 <InputField
                   label="Password"
@@ -122,23 +129,6 @@ const Signup = () => {
                 />
               </div>
 
-              <InputField
-                label="Email"
-                id="email"
-                type="text"
-                required
-                placeholder="Enter your email"
-                register={register}
-                validation={{
-                  required: "Please, enter the email",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Invalid email",
-                  },
-                }}
-                errors={errors.email ? errors.email.message : ""}
-              />
-
               <InputRadio
                 id="gender"
                 label="Gender"
@@ -152,6 +142,20 @@ const Signup = () => {
                   required: "Please, enter the gender",
                 }}
                 errors={errors.gender ? errors.gender.message : ""}
+              />
+
+              <InputRadio
+                id="hasWarehouse"
+                label="Customer or administrator"
+                options={[
+                  { value: false, name: "Customer" },
+                  { value: true, name: "Administrator" },
+                ]}
+                register={register}
+                validation={{
+                  required: "Please, choose an option",
+                }}
+                errors={errors.hasWarehouse ? errors.hasWarehouse.message : ""}
               />
             </div>
 

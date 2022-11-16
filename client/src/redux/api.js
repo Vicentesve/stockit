@@ -25,8 +25,13 @@ export const updateMe = (id, userData) => API.put(`/updateMe/${id}`, userData);
 export const logout = () => localStorage.removeItem("stockit-user");
 
 /**
- * * My warehouse
+ * * Warehouse
  */
+export const getProductsByWarehouse = (id) =>
+  API.get(`/getProductsByWarehouse/${id}`);
+export const getProductsByCategory = (id) =>
+  API.get(`/getProductsByCategory/${id}`);
+export const getWarehousesPreview = () => API.get("/getWarehousesPreview");
 export const getMyWarehouse = (id) => API.get(`/getMyWarehouse/${id}`);
 export const addProduct = (_id, productData) =>
   API.post(`/warehouse/addProduct/${_id}`, productData);

@@ -9,10 +9,10 @@ function CurrentPath({ arrayPath }) {
       <nav className="flex mb-4">
         <ol className="inline-flex items-center space-x-1 md:space-x-3">
           {arrayPath.map((value, i) =>
-            value.name === "" ? (
-              <li key={i} className="inline-flex items-center cursor-default">
+            value.name === "my-warehouse" ? (
+              <li key={i} className="inline-flex cursor-default">
                 <Link to={value?.route}>
-                  <button className="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+                  <button className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
                     <svg
                       className="w-4 h-4 mr-2"
                       fill="currentColor"
@@ -21,7 +21,7 @@ function CurrentPath({ arrayPath }) {
                     >
                       <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
                     </svg>
-                    Home
+                    <p>Home</p>
                   </button>
                 </Link>
               </li>
@@ -44,9 +44,7 @@ function CurrentPath({ arrayPath }) {
                         clipRule="evenodd"
                       ></path>
                     </svg>
-                    <p
-                      className="ml-1 text-sm font-medium text-gray-700 capitalize md:ml-2 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
-                    >
+                    <p className="ml-1 text-sm font-medium text-gray-700 capitalize md:ml-2 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
                       {value.name.replaceAll("-", " ")}
                     </p>
                   </div>

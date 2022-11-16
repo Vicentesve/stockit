@@ -61,10 +61,10 @@ const generateToken = (id) => {
  * * @access      Public
  */
 module.exports.login = async (req, res) => {
-  const { user, password } = req.body;
+  const { email, password } = req.body;
 
   try {
-    const login_user = await User.login(user, password);
+    const login_user = await User.login(email, password);
 
     res.status(201).json({
       _id: login_user.id,
@@ -74,6 +74,7 @@ module.exports.login = async (req, res) => {
       email: login_user.email,
       user: login_user.login_user,
       gender: login_user.gender,
+      hasWarehouse: login_user.hasWarehouse,
       profilePic: login_user.profilePic,
       settings: login_user.settings,
       token: generateToken(generateToken._id),
@@ -102,7 +103,7 @@ module.exports.signup = async (req, res) => {
       products: [],
     };
 
-    const warehouse = await Warehouse.create(fieldsWarehouse);
+    await Warehouse.create(fieldsWarehouse);
 
     res.status(201).json({
       _id: user.id,
@@ -112,12 +113,14 @@ module.exports.signup = async (req, res) => {
       email: user.email,
       user: user.user,
       gender: user.gender,
+      hasWarehouse: user.hasWarehouse,
       profilePic: user.profilePic,
       settings: user.settings,
       token: generateToken(generateToken._id),
       createdAt: user.createdAt,
     });
   } catch (err) {
+    console.log(err);
     const message = handleErrors(err);
     res.status(400).send({ message });
   }
@@ -184,6 +187,7 @@ module.exports.updateMe = async (req, res) => {
       email: updatedUsuario.email,
       user: updatedUsuario.updatedUsuario,
       gender: updatedUsuario.gender,
+      hasWarehouse: updatedUsuario.hasWarehouse,
       profilePic: updatedUsuario.profilePic,
       settings: updatedUsuario.settings,
       createdAt: updatedUsuario.createdAt,

@@ -19,9 +19,13 @@ const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
 
   const modules = [
-    { name: "Dashboard", icon: Squares2X2Icon, url: "/dashboard" },
-    { name: "Orders", icon: ClipboardIcon, url: "/orders" },
-    { name: "Warehouse", icon: ArchiveBoxIcon, url: "/warehouse" },
+    { name: "Dashboard", icon: Squares2X2Icon, url: "/my-warehouse/dashboard" },
+    { name: "Orders", icon: ClipboardIcon, url: "/my-warehouse/orders" },
+    {
+      name: "Warehouse",
+      icon: ArchiveBoxIcon,
+      url: "/my-warehouse/my-products",
+    },
   ];
 
   const handleLogout = () => {
@@ -36,7 +40,7 @@ const Sidebar = () => {
   return (
     <aside className="overflow-y-scroll md:overflow-hidden z-[90] overflow-x-hidden min-h-screen bg-cyan-50 dark:bg-gray-900 hidden p-5 md:flex flex-col items-center justify-between w-[10%] lg:w-[8%] xl:w-[7%] 2xl:w-[5%]">
       <div>
-        <Link to="/">
+        <Link to="/my-warehouse">
           <Logo />
         </Link>
 
@@ -55,7 +59,7 @@ const Sidebar = () => {
           onClick={onClickSettings}
           name="Settings"
           Icon={Cog6ToothIcon}
-          url="/settings"
+          url="/my-warehouse/settings"
         />
         {/* Logout */}
         <NavLinkToolTip

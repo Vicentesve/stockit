@@ -65,16 +65,20 @@ const Login = () => {
             {/* Inputs */}
             <div className="flex flex-col space-y-5">
               <InputField
-                label="User"
-                id="user"
+                label="Email"
+                id="email"
                 type="text"
                 required
-                placeholder="Enter your user"
+                placeholder="Enter your email"
                 register={register}
                 validation={{
-                  required: "Please, enter the user",
+                  required: "Please, enter the email",
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "Invalid email",
+                  },
                 }}
-                errors={errors.user ? errors.user.message : ""}
+                errors={errors.email ? errors.email.message : ""}
               />
               <InputField
                 label="Password"

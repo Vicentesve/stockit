@@ -23,9 +23,13 @@ const FloatBar = () => {
   };
 
   const modules = [
-    { name: "Dashboard", icon: Squares2X2Icon, url: "/dashboard" },
-    { name: "Orders", icon: ClipboardIcon, url: "/orders" },
-    { name: "Warehouse", icon: ArchiveBoxIcon, url: "/warehouse" },
+    { name: "Dashboard", icon: Squares2X2Icon, url: "/my-warehouse/dashboard" },
+    { name: "Orders", icon: ClipboardIcon, url: "/my-warehouse/orders" },
+    {
+      name: "Warehouse",
+      icon: ArchiveBoxIcon,
+      url: "/my-warehouse/my-products",
+    },
   ];
 
   const onClickSettings = () => {
@@ -77,7 +81,7 @@ const FloatBar = () => {
           {/* Settings */}
           <NavLink
             onClick={onClickSettings}
-            to="/settings"
+            to="/my-warehouse/settings"
             className={({ isActive }) =>
               `text-gray-500 hover:bg-white hover:border-gray-300 border border-transparent rounded-md p-2 
               group dark:text-gray-200 dark:hover:bg-gray-700 dark:border-gray-900 flex items-center space-x-2  ${

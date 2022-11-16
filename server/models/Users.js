@@ -10,12 +10,9 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
     },
-    user: {
-      type: String,
-      unique: true,
-    },
     password: String,
     gender: String,
+    hasWarehouse: Boolean,
     profilePic: {
       default: "https://flowbite.com/docs/images/examples/image-2@2x.jpg",
       type: String,
@@ -33,9 +30,9 @@ const userSchema = new mongoose.Schema(
 );
 
 //Static method to login user
-userSchema.statics.login = async function (user, password) {
-  const user_login = await this.findOne({ user });
-  if (user) {
+userSchema.statics.login = async function (email, password) {
+  const user_login = await this.findOne({ email });
+  if (email) {
     const auth = await bcrypt.compare(password, user_login.password);
     if (auth) {
       return user_login;

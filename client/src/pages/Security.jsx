@@ -12,20 +12,16 @@ const Security = () => {
 
   const buildNavRoute = () => {
     const arrayPath = window.location.pathname.split("/");
+    arrayPath.shift();
     let navPath = [];
     let concatRoute = "";
     // eslint-disable-next-line array-callback-return
-    arrayPath.map((data) => {
+    arrayPath.map((data, i) => {
       const dataPush = {};
 
-      if (data === "") {
-        dataPush.route = "/";
-        dataPush.name = "";
-      } else {
-        dataPush.route = `${concatRoute}/${data}`;
-        dataPush.name = data;
-        concatRoute = concatRoute.concat(dataPush.route);
-      }
+      dataPush.route = `${concatRoute}/${data}`;
+      dataPush.name = data;
+      concatRoute = concatRoute.concat(`/${data}`);
       navPath.push(dataPush);
     });
     navPath[1].onClick = () => dispatch(setSubSideNav(true));

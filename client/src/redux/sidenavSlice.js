@@ -5,6 +5,7 @@ export const sidenavSlice = createSlice({
   initialState: {
     value: false,
     subsidenavValue: false,
+    hoverCard: false,
   },
   reducers: {
     setIsOpen: (state) => {
@@ -13,9 +14,12 @@ export const sidenavSlice = createSlice({
     setSubSideNav: (state, action) => {
       state.subsidenavValue = action.payload;
     },
+    setHoverCard: (state, action) => {
+      state.hoverCard = action.payload;
+    },
   },
 });
 
-export const { setIsOpen, setSubSideNav } = sidenavSlice.actions;
+export const { setIsOpen, setSubSideNav, setHoverCard } = sidenavSlice.actions;
 
 export default sidenavSlice.reducer;

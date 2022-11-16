@@ -21,9 +21,23 @@ module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./node_modules/flowbite/**/*.js"],
   theme: {
     extend: {
+      dropShadow: {
+        hoverCard: "0 -0.0625rem 0.0625rem rgba(0 0 0 /.1)",
+      },
+      boxShadow: {
+        hoverCard:
+          "0 0.125rem 0.5rem rgba(0 0 0 / .3), 0 0.0625rem 0.125rem rgba(0 0 0 / .2)",
+      },
       colors: {
         black_rgba: "rgba(0, 0, 0, 0.7)",
         black_rgba_dark: "rgba(0, 0, 0, 0.7)",
+      },
+      spacing: {
+        1.5: "1.5px",
+        100: "500px",
+        0.75: ".75rem",
+        "4/4": "100%",
+        "6.8/10": "68%",
       },
       backgroundImage: {
         "welcome-image": "url('/public/images/warehouse_login.jpg')",

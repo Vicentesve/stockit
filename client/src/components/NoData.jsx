@@ -3,14 +3,14 @@ import React from "react";
 const NoData = ({ visible }) => {
   return (
     <div
-      className={`text-6xl flex flex-col justify-center h-full  items-center text-center p-5 sm:tracking-widest ${
+      className={`text-6xl flex flex-col justify-center h-full overflow-hidden  items-center text-center p-5 sm:tracking-widest ${
         visible && "hidden"
       }`}
     >
-      <div>
+      <div className="">
         <svg
           data-name="Layer 1"
-          className=" h-[250px] sm:h-[500px]"
+          className=" h-[250px] sm:h-[300px]"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 647.63626 632.17383"
         >
