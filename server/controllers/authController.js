@@ -91,13 +91,15 @@ module.exports.signup = async (req, res) => {
     const user = await User.create(req.body);
 
     /* Create warehouse for the user */
-    const fieldsWarehouse = {
-      adminId: user.id,
-      name: `Warehouse of ${user.name}`,
-      products: [],
-    };
+    if (user.hasWarehouse) {
+      const fieldsWarehouse = {
+        adminId: user.id,
+        name: `Warehouse of ${user.name}`,
+        products: [],
+      };
 
-    await Warehouse.create(fieldsWarehouse);
+      await Warehouse.create(fieldsWarehouse);
+    }
 
     res.status(201).json({
       _id: user.id,
