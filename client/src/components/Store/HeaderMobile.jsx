@@ -7,16 +7,18 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSubSideNav } from "../../redux/sidenavSlice";
 
 const HeaderMobile = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { cartSize } = useSelector((state) => state.store);
 
   return (
-    <div className="sm:hidden sticky top-0 flex items-center justify-between p-2 text-sm text-white bg-slate-900 z-[100]">
+    <div className="sm:hidden sticky top-0 flex items-center justify-between p-2 text-sm text-white bg-slate-900 z-[80]">
       <div className="flex items-center space-x-2">
-        <button>
+        <button onClick={() => dispatch(setSubSideNav(true))}>
           <Bars3Icon className="h-6" />
         </button>
 

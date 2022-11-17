@@ -1,10 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import CheckOutProduct from "../../components/Store/CheckOutProduct";
 
 export const Cart = () => {
-  const { cart } = useSelector((state) => state.store);
-  const { cartSize, total } = useSelector((state) => state.store);
+  const { cart, cartSize, total } = useSelector((state) => state.store);
+  const { user } = useSelector((state) => state.auth);
 
   const currencyFormat = (num) => {
     if (!isNaN(num)) {
@@ -16,8 +17,8 @@ export const Cart = () => {
 
   return (
     <div>
-      <div className="flex flex-col-reverse justify-center w-full mx-auto sm:space-x-5 sm:flex-row max-w-screen-2xl">
-        <div className="sm:w-[80%] bg-white sm:mt-5 p-3 sm:p-5">
+      <div className="flex flex-col-reverse justify-center flex-1 w-full h-full mx-auto sm:space-x-5 sm:flex-row max-w-screen-2xl">
+        <div className="sm:w-[80%] h-full bg-white sm:mt-5 p-3 sm:p-5">
           <h3 className="hidden text-2xl font-semibold sm:block">
             {cart.length > 0
               ? "Shopping Cart"
@@ -479,9 +480,27 @@ export const Cart = () => {
               <span className="font-semibold">{currencyFormat(total)}</span>
             </p>
 
-            <button className="px-5 py-2 my-3 text-sm font-medium text-black bg-yellow-300 rounded-lg focus:outline-none hover:bg-yellow-200 focus:ring-4 focus:ring-yellow-300">
-              Proceed to checkout
-            </button>
+            {user ? (
+              cart.length > 0 ? (
+                <Link
+                  to="/checkout"
+                  className="p-2 my-3 text-xs border border-yellow-300 rounded-md bg-gradient-to-b md:text-sm focus:ring-2 from-yellow-200 to-yellow-400 active:from-yellow-500 focus:ring-yellow-500"
+                >
+                  Proceed to checkout
+                </Link>
+              ) : (
+                <button className="p-2 my-3 text-xs text-gray-300 border rounded-md cursor-not-allowed bg-gradient-to-b md:text-sm focus:ring-2 from-gray-300 to-gray-500">
+                  Empty Shopping Cart
+                </button>
+              )
+            ) : (
+              <Link
+                to="/login"
+                className="p-2 my-3 text-xs text-gray-300 border rounded-md cursor-not-allowed bg-gradient-to-b md:text-sm focus:ring-2 from-gray-300 to-gray-500"
+              >
+                Sign in to proceed to checkout
+              </Link>
+            )}
           </div>
         </div>
       </div>

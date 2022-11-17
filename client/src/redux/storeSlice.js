@@ -141,6 +141,7 @@ export const storeSlice = createSlice({
       state.currentCategory = action.payload;
     },
     addToCart: (state, action) => {
+      console.log(action.payload);
       const objIndex = state.cart.findIndex(
         (obj) => obj._id === action.payload?._id
       );
@@ -189,6 +190,13 @@ export const storeSlice = createSlice({
       );
 
       if (objIndex > -1) {
+        state.total -=
+          state.cart[objIndex].quantity *
+          parseFloat(state.cart[objIndex].price.$numberDecimal);
+        state.total +=
+          parseFloat(state.cart[objIndex].price.$numberDecimal) *
+          action.payload.quantity;
+
         state.cart[objIndex].quantity = action.payload.quantity;
       }
     },
@@ -216,6 +224,11 @@ export const storeSlice = createSlice({
     },
     dicrementByAmount: (state, action) => {
       state.cartSize -= action.payload;
+    },
+    removeAllFromCart: (state, _) => {
+      state.cart = [];
+      state.cartSize = 0;
+      state.total = 0.0;
     },
   },
   extraReducers: (builder) => {
@@ -277,5 +290,6 @@ export const {
   removeProductFromCart,
   removeOneToCart,
   addOneToCart,
+  removeAllFromCart,
 } = storeSlice.actions;
 export default storeSlice.reducer;

@@ -11,8 +11,6 @@ const SubSidenav = ({ module }) => {
     location.pathname.lastIndexOf("/") + 1
   );
 
-  console.log(location.pathname);
-
   return (
     <div className="flex w-full text-gray-500 bg-white dark:bg-gray-800 dark:text-gray-400">
       <div

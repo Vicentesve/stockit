@@ -11,15 +11,11 @@ const Warehouse = require("../models/Warehouse");
 const handleErrors = (err) => {
   let errors = {
     email: "",
-    user: "",
     password: "",
     currentPassword: "",
   };
-  //Incorrect user
-  if (err.message === "incorrect user") {
-    errors.user = "This user is not registered";
-  }
-  //Incorrect user
+
+  //Incorrect password
   if (err.message === "incorrect password") {
     errors.password = "Incorrect password";
   }
@@ -35,9 +31,7 @@ const handleErrors = (err) => {
     if (err.message.includes("email")) {
       errors.email = "The email entered already exists";
     }
-    if (err.message.includes("user")) {
-      errors.user = "The entered user already exists";
-    }
+
     return errors;
   }
 
@@ -111,7 +105,6 @@ module.exports.signup = async (req, res) => {
       name: user.name,
       lastname: user.lastname,
       email: user.email,
-      user: user.user,
       gender: user.gender,
       hasWarehouse: user.hasWarehouse,
       profilePic: user.profilePic,

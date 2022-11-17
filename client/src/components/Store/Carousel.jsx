@@ -11,8 +11,8 @@ const Carousel = () => {
   const [my_swiper, set_my_swiper] = useState({});
 
   return (
-    <div className="relative">
-      <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-gray-100 to-transparent" />
+    <div className="">
+      {/* <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-gray-100 to-transparent" /> */}
       <Swiper
         slidesPerView={1}
         onInit={(ev) => {
@@ -23,6 +23,7 @@ const Carousel = () => {
           disableOnInteraction: false,
         }}
         modules={[Autoplay]}
+        className="h-full"
       >
         <SwiperSlide>
           <img

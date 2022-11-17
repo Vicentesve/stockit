@@ -267,69 +267,73 @@ const Table = ({
                 </button>
               </div>
 
-              {currentRecords?.length > 0 ? (
-                <div className="relative border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
-                  <div
-                    ref={divRef}
-                    className="h-[450px] xl:h-[500px] 2xl:h-[650px] overflow-auto rounded-lg scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-thumb-gray-50 dark:scrollbar-thumb-gray-700"
-                  >
-                    <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                      <thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                          {columns?.map((column, i) => (
-                            <th
-                              key={i}
-                              scope="col"
-                              className={`px-6 py-3 ${column.width}`}
-                            >
-                              {column.label}
-                            </th>
-                          ))}
-                          <th scope="col" className="px-6 py-3 w-[5%]">
-                            Actions
+              <div className="relative border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
+                <div
+                  ref={divRef}
+                  className="h-[450px] xl:h-[500px] 2xl:h-[650px] overflow-auto rounded-lg scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-thumb-gray-50 dark:scrollbar-thumb-gray-700"
+                >
+                  <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                      <tr>
+                        {columns?.map((column, i) => (
+                          <th
+                            key={i}
+                            scope="col"
+                            className={`px-6 py-3 ${column.width}`}
+                          >
+                            {column.label}
                           </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {addModeId ? (
-                          <AddRow
-                            columns={columns}
-                            addFormData={buildFormState()}
-                            errors={buildFormErrors()}
-                            handleCancelClick={handleCancelClick}
-                            onSubmitAdd={onSubmitAdd}
-                          />
-                        ) : null}
-                        {currentRecords?.map((item, i) => (
-                          <Fragment key={i}>
-                            {editModeId === item?._id ? (
-                              <EditableRow
-                                id={item?._id}
-                                columns={columns}
-                                data={setFormState(item)}
-                                errors={buildFormErrors()}
-                                handleCancelClick={handleCancelClick}
-                                onSubmitEdit={onSubmitEdit}
-                              />
-                            ) : (
-                              <ReadOnlyRow
-                                rowIndex={i}
-                                rowItem={item}
-                                columns={columns}
-                                handleEditClick={handleEditClick}
-                                handleDeleteClick={handleDeleteClick}
-                                onSubmitDelete={onSubmitDelete}
-                              />
-                            )}
-                          </Fragment>
                         ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        <th scope="col" className="px-6 py-3 w-[5%]">
+                          Actions
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {addModeId ? (
+                        <AddRow
+                          columns={columns}
+                          addFormData={buildFormState()}
+                          errors={buildFormErrors()}
+                          handleCancelClick={handleCancelClick}
+                          onSubmitAdd={onSubmitAdd}
+                        />
+                      ) : null}
+                      {currentRecords?.length > 0 ? (
+                        <>
+                          {currentRecords?.map((item, i) => (
+                            <Fragment key={i}>
+                              {editModeId === item?._id ? (
+                                <EditableRow
+                                  id={item?._id}
+                                  columns={columns}
+                                  data={setFormState(item)}
+                                  errors={buildFormErrors()}
+                                  handleCancelClick={handleCancelClick}
+                                  onSubmitEdit={onSubmitEdit}
+                                />
+                              ) : (
+                                <ReadOnlyRow
+                                  rowIndex={i}
+                                  rowItem={item}
+                                  columns={columns}
+                                  handleEditClick={handleEditClick}
+                                  handleDeleteClick={handleDeleteClick}
+                                  onSubmitDelete={onSubmitDelete}
+                                />
+                              )}
+                            </Fragment>
+                          ))}
+                        </>
+                      ) : (
+                        <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ">
+                          <NoData visible={addModeId} />
+                        </div>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
-              ) : (
-                <NoData visible={addModeId} />
-              )}
+              </div>
             </div>
           )}
         </div>

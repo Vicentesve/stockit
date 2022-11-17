@@ -41,8 +41,13 @@ export const deleteProduct = (_id, formData) =>
   API.put(`/warehouse/deleteProduct/${_id}`, formData);
 
 /**
- * * Get my warehouse
+ * * Categories
  */
 export const getCategories = () => API.get(`/getCategories`);
+
+/**
+ * * Orders
+ */
+export const setOrder = (formData) => API.put("/setOrder", formData);
 
 export default API;

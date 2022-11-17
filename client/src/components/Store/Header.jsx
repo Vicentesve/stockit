@@ -10,6 +10,7 @@ import InputSearch from "./InputSearch";
 import { Link } from "react-router-dom";
 import HoverCardBase from "./HoverCardBase";
 import { logout } from "../../redux/authSlice";
+import { setHoverCard } from "../../redux/sidenavSlice";
 const Header = ({ categories }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -27,6 +28,10 @@ const Header = ({ categories }) => {
     }
   };
 
+  const resetBackGround = () => {
+    dispatch(setHoverCard(false));
+  };
+
   const Account = () => {
     return (
       <div className="flex items-center p-2 space-x-3 border border-transparent cursor-pointer hover:border-white">
@@ -37,7 +42,7 @@ const Header = ({ categories }) => {
               Hello, <span className="font-semibold ">{user.name}!</span>
             </h3>
           ) : (
-            <a href="/login" className="">
+            <a onClick={resetBackGround} href="/login" className="">
               Sign In
             </a>
           )}
@@ -64,6 +69,7 @@ const Header = ({ categories }) => {
           ) : (
             <Link
               to="login"
+              onClick={resetBackGround}
               className="px-10 py-2 text-sm font-medium text-center text-white bg-yellow-400 rounded-md hover:bg-yellow-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 dark:focus:ring-yellow-900"
             >
               Sign In
@@ -93,7 +99,7 @@ const Header = ({ categories }) => {
               <li className="cursor-pointer hover:underline">Account</li>
               <li className="cursor-pointer hover:underline">Orders</li>
               {user?.hasWarehouse ? (
-                <Link to="/my-warehouse">
+                <Link onClick={resetBackGround} to="/my-warehouse">
                   <li className="cursor-pointer hover:underline">
                     See my Warehouse
                   </li>
@@ -108,7 +114,7 @@ const Header = ({ categories }) => {
   };
 
   return (
-    <div className="items-center justify-between flex-grow hidden p-2 mx-auto space-x-10 text-sm  sm:flex bg-slate-900">
+    <div className="items-center justify-between flex-grow hidden p-2 mx-auto space-x-10 text-sm sm:flex bg-slate-900">
       <Link to="/">
         <div className="flex items-center space-x-2 text-white">
           <CubeIcon className="h-8" />

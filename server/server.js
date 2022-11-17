@@ -10,6 +10,7 @@ const port = process.env.PORT || 5000;
 const authRoutes = require("./routes/authRoutes");
 const warehouseRoutes = require("./routes/warehouseRoutes");
 const categorieRoutes = require("./routes/categorieRoutes");
+const orderRoutes = require("./routes/ordersRoutes");
 
 //Config dotenv
 if (process.env.NODE_ENV !== "production") {
@@ -33,6 +34,7 @@ app.use(cors());
 app.use(authRoutes);
 app.use(warehouseRoutes);
 app.use(categorieRoutes);
+app.use(orderRoutes);
 
 // Static files (build of your frontend)
 if (process.env.NODE_ENV === "production") {

@@ -207,7 +207,7 @@ const AddRow = ({
     }
   };
   return (
-    <tr className="bg-white border-white border-dashed border-y dark:bg-gray-800 dark:border-gray-700">
+    <tr className="bg-white border-gray-400 border-dashed border-y dark:bg-gray-800 dark:border-gray-700">
       {columns?.map((columnItem, i) => (
         <td className="px-6 py-4" key={i}>
           {renderSwitch(columnItem)}

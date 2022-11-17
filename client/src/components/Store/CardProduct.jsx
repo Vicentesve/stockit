@@ -4,7 +4,7 @@ import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/storeSlice";
 
-const CardProduct = ({ product, category }) => {
+const CardProduct = ({ product, category, warehouseId }) => {
   const dispatch = useDispatch();
   const [rating] = useState(Math.floor(Math.random() * (5 - 1 + 1)) + 1);
   function randomIntFromInterval(min, max) {
@@ -19,6 +19,12 @@ const CardProduct = ({ product, category }) => {
     } else {
       return num;
     }
+  };
+
+  const pushToCart = () => {
+    const productToAdd = { ...product };
+    productToAdd.fromWarehouseId = warehouseId;
+    dispatch(addToCart(productToAdd));
   };
 
   return (
@@ -62,7 +68,7 @@ const CardProduct = ({ product, category }) => {
           </h4>
 
           <button
-            onClick={() => dispatch(addToCart(product))}
+            onClick={pushToCart}
             className="flex items-center px-4 py-2 space-x-1 text-sm font-medium text-white bg-yellow-400 rounded-lg focus:outline-none hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300"
           >
             <ShoppingCartIcon className="h-5" />

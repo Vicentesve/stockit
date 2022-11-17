@@ -4,6 +4,7 @@ import authReducer from "../redux/authSlice";
 import warehouseReducer from "../redux/warehouseSlice";
 import categorieReducer from "../redux/categoriesSlice";
 import storeReducer from "../redux/storeSlice";
+import orderReducer from "../redux/orderSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     warehouse: warehouseReducer,
     categories: categorieReducer,
     store: storeReducer,
+    order: orderReducer,
   },
 });

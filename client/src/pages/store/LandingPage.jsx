@@ -8,13 +8,21 @@ import { getWarehousesPreview } from "../../redux/storeSlice";
 import { getCategories } from "./../../redux/categoriesSlice";
 import { Outlet } from "react-router-dom";
 import HeaderMobile from "../../components/Store/HeaderMobile";
+import SidebarMobile from "../../components/Store/SidebarMobile";
+import BackGroundOpacity from "../../components/Store/BackGroundOpacity";
+import { ToastContainer } from "react-toastify";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
 
   const { categories } = useSelector((state) => state.categories);
   const { isLoading } = useSelector((state) => state.auth);
-  const { hoverCard } = useSelector((state) => state.sidenavState);
+  const { hoverCard, subsidenavValue } = useSelector(
+    (state) => state.sidenavState
+  );
+
+  document.body.style.overflow = subsidenavValue ? "hidden" : "auto";
+  document.body.style.overflow = hoverCard ? "hidden" : "auto";
 
   useEffect(() => {
     dispatch(getCategories());
@@ -22,22 +30,35 @@ const LandingPage = () => {
   }, [dispatch]);
 
   return (
-    <div className="min-h-screen bg-gray-300/50">
+    <div className="relative min-h-screen bg-gray-300/50">
       {isLoading ? <Spinner /> : null}
       <Header categories={categories} />
       <HeaderMobile />
       <Navbar categories={categories} />
-      <div className="relative ">
+      <SidebarMobile categories={categories} />
+
+      <BackGroundOpacity />
+
+      <div className="relative h-full">
         <div
-          className={`absolute top-0 w-full h-full bg-black_rgba z-[80] ${
+          className={`absolute top-0 w-full h-screen overflow-hidden bg-black_rgba z-[80] ${
             !hoverCard && "hidden"
           }`}
         ></div>
-
         <Outlet />
       </div>
 
-      <main className="mx-auto max-w-screen-2xl "></main>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

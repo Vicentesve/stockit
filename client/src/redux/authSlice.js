@@ -117,9 +117,6 @@ export const signup = createAsyncThunk(
         ? error.response.data.message
         : error.message;
 
-      console.log(message);
-
-      delete message.user;
       delete message.currentPassword;
 
       Object.keys(message).forEach((key) => {

@@ -2,13 +2,14 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import CardProduct from "../../components/Store/CardProduct";
+import LoadingCard from "../../components/Store/LoadingCard";
 import { getProductsByCategory } from "../../redux/storeSlice";
 
 const CategoryPage = () => {
   const params = useParams();
   const dispatch = useDispatch();
 
-  const { products } = useSelector((state) => state.store);
+  const { products, isLoading } = useSelector((state) => state.store);
   const { categories } = useSelector((state) => state.categories);
 
   const objIndex = categories.findIndex((obj) => obj._id === params?.id);
@@ -28,12 +29,23 @@ const CategoryPage = () => {
       </div>
 
       <div className="grid w-full gap-3 mt-5 grid-col-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 place-items-center">
-        {products?.map((product, i) => (
-          <CardProduct
-            key={`${product?._id}_${i}`}
-            product={product?.products}
-          />
-        ))}
+        {isLoading ? (
+          <>
+            {[...Array(10)].map((_, i) => (
+              <LoadingCard key={i} />
+            ))}
+          </>
+        ) : (
+          <>
+            {products?.map((product, i) => (
+              <CardProduct
+                key={`${product?._id}_${i}`}
+                product={product?.products}
+                warehouseId={product?.adminId}
+              />
+            ))}
+          </>
+        )}
       </div>
     </div>
   );
