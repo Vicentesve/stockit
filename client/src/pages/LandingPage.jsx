@@ -27,7 +27,7 @@ const LandingPage = () => {
   }
 
   useEffect(() => {
-    if (!isSuccess && !user) {
+    if (!isSuccess && !user.hasWarehouse) {
       navigate("/login");
     }
   }, [user, isError, isSuccess, message, navigate, dispatch]);
