@@ -27,7 +27,7 @@ const SelectFloat = ({ options, label, value, onChange, id, error }) => {
         <option value="0" className="text-gray-400">
           Choose a {label}
         </option>
-        {options.map((option) => (
+        {options?.map((option) => (
           <option key={option._id} value={option._id}>
             {option.name}
           </option>

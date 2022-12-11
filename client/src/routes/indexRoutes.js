@@ -10,6 +10,13 @@ import CategoryPage from "../pages/store/CategoryPage";
 import WarehousePage from "../pages/store/WarehousePage";
 import { Cart } from "../pages/store/Cart";
 import Checkout from "../pages/store/Checkout";
+import Dashboard from "../pages/Dashboard";
+import SearchPage from "../pages/store/SearchPage";
+import ProductDetails from "../pages/store/ProductDetails";
+import Orders from "../pages/store/Orders";
+import MyAccount from "../pages/store/MyAccount";
+import MyAddresses from "../pages/store/MyAddresses";
+import NewDirection from "../pages/store/NewDirection";
 
 const routes = [
   {
@@ -19,7 +26,16 @@ const routes = [
       { index: true, element: <Home /> },
       { path: "category/:id", element: <CategoryPage /> },
       { path: "warehouse/:id", element: <WarehousePage /> },
+      { path: "product/:id", element: <ProductDetails /> },
+      { path: "search/:categoryId/:search", element: <SearchPage /> },
       { path: "cart", element: <Cart /> },
+      { path: "my-account", element: <MyAccount /> },
+      { path: "my-account/my-addresses", element: <MyAddresses /> },
+      {
+        path: "my-account/my-addresses/new-address",
+        element: <NewDirection />,
+      },
+      { path: "orders", element: <Orders /> },
     ],
   },
   { path: "/checkout", element: <Checkout /> },
@@ -28,7 +44,7 @@ const routes = [
     element: <LandingPage />,
     children: [
       { index: true, element: <Welcome /> },
-      { path: "dashboard", element: <p>Dashboard</p> },
+      { path: "dashboard", element: <Dashboard /> },
       { path: "orders", element: <p>Orders</p> },
       { path: "my-products", element: <Warehouse /> },
       settingsRoutes,

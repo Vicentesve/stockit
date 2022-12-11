@@ -4,18 +4,19 @@ import {
   ShoppingCartIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputSearch from "./InputSearch";
 import { Link } from "react-router-dom";
-import HoverCardBase from "./HoverCardBase";
 import { logout } from "../../redux/authSlice";
 import { setHoverCard } from "../../redux/sidenavSlice";
+import PopOverBase from "./PopOverBase";
 const Header = ({ categories }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { cartSize, total } = useSelector((state) => state.store);
 
+  const [popState, setPopState] = useState(false);
   const handleLogout = () => {
     dispatch(logout());
   };
@@ -29,6 +30,7 @@ const Header = ({ categories }) => {
   };
 
   const resetBackGround = () => {
+    setPopState(false);
     dispatch(setHoverCard(false));
   };
 
@@ -96,7 +98,9 @@ const Header = ({ categories }) => {
           <div className="w-[50%]">
             <h3 className="text-lg font-semibold">Your Account</h3>
             <ul className="mt-3 text-gray-500 text-sx">
-              <li className="cursor-pointer hover:underline">Account</li>
+              <Link onClick={resetBackGround} to="/my-account">
+                <li className="cursor-pointer hover:underline">Account</li>
+              </Link>
               <li className="cursor-pointer hover:underline">Orders</li>
               {user?.hasWarehouse ? (
                 <Link onClick={resetBackGround} to="/my-warehouse">
@@ -128,13 +132,21 @@ const Header = ({ categories }) => {
 
       <div className="flex items-center space-x-10 text-white cursor-default">
         {/* Account */}
-        <HoverCardBase trigger={Account()} content={AccountContent()} />
+        {/* <HoverCardBase trigger={Account()} content={AccountContent()} /> */}
+        <PopOverBase
+          trigger={Account()}
+          content={AccountContent()}
+          open={popState}
+          setOpen={setPopState}
+        />
 
         {/* Return & order */}
-        <div className="p-2 border border-transparent cursor-pointer hover:border-white">
-          <p className="font-light text-gray-300 ">Returns</p>
-          <p className="-mt-1 font-semibold">& Orders</p>
-        </div>
+        <Link to="/orders">
+          <div className="p-2 border border-transparent cursor-pointer hover:border-white">
+            <p className="font-light text-gray-300 ">Returns</p>
+            <p className="-mt-1 font-semibold">& Orders</p>
+          </div>
+        </Link>
 
         {/* Cart */}
         <Link

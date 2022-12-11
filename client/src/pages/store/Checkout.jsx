@@ -38,32 +38,7 @@ const Checkout = () => {
   const onSubmit = () => {
     const orderToSubmit = {};
     orderToSubmit.customerId = user?._id;
-    orderToSubmit.fromWarehouseId = [];
-    const products = [];
-
-    for (const key in cart) {
-      const keys = Object.keys(cart[key]);
-
-      keys.forEach((a, _) => {
-        if (a === "fromWarehouseId") {
-          orderToSubmit.fromWarehouseId.push(cart[key].fromWarehouseId);
-        }
-      });
-    }
-    for (const key in cart) {
-      const productToPush = {};
-      productToPush._id = cart[key]._id;
-      productToPush.name = cart[key].name;
-      productToPush.description = cart[key].description;
-      productToPush.price = cart[key].price;
-      productToPush.category = cart[key].category;
-      productToPush.image = cart[key].image;
-      productToPush.quantity = cart[key].quantity;
-
-      products.push(productToPush);
-    }
-
-    orderToSubmit.products = products;
+    orderToSubmit.products = [...cart];
     orderToSubmit.total = total;
 
     dispatch(setOrder(orderToSubmit));

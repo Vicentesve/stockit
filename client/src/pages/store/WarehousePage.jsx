@@ -8,9 +8,10 @@ import { getProductsByWarehouse } from "../../redux/storeSlice";
 const WarehousePage = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const { warehouses, isLoading } = useSelector((state) => state.store);
-  const { products } = useSelector((state) => state.store);
-  const { categories } = useSelector((state) => state.categories);
+  const warehouses = useSelector((state) => state.store.warehouses);
+  const isLoading = useSelector((state) => state.store.isLoading);
+  const products = useSelector((state) => state.store.products);
+  const categories = useSelector((state) => state.categories.categories);
 
   const objIndexWarehouse = warehouses.findIndex(
     (obj) => obj._id === params?.id

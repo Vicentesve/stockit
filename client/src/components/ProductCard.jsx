@@ -7,9 +7,6 @@ const ProductCard = ({
   editModeId,
   findCategory,
   handleEditClick,
-  options,
-  handleCancelClick,
-  onSubmitEdit,
   handleDeleteClick,
   handleFormDelete,
 }) => {

@@ -21,7 +21,7 @@ const TableSkeleton = ({ columns, data }) => {
   };
 
   return (
-    <div className="relative overflow-x-auto overflow-y-hidden border border-gray-200 shadow-lg dark:border-transparent sm:rounded-md">
+    <div className="relative border border-gray-200 shadow-lg dark:border-transparent sm:rounded-md h-[450px] xl:h-[500px] 2xl:h-[750px] overflow-hidden">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>

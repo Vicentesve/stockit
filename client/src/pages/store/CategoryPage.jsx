@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import CardProduct from "../../components/Store/CardProduct";
 import LoadingCard from "../../components/Store/LoadingCard";
-import { getProductsByCategory } from "../../redux/storeSlice";
+import { getProductsByCategory, resetProducts } from "../../redux/storeSlice";
 
 const CategoryPage = () => {
   const params = useParams();
@@ -16,7 +16,12 @@ const CategoryPage = () => {
 
   useEffect(() => {
     dispatch(getProductsByCategory(params?.id));
+
+    return () => {
+      dispatch(resetProducts());
+    };
   }, [dispatch, params]);
+
   return (
     <div className="p-2 mx-auto max-w-screen-2xl">
       <h3 className="text-3xl font-bold">{categories[objIndex]?.name}</h3>

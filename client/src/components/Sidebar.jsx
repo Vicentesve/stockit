@@ -2,6 +2,7 @@ import React from "react";
 import {
   ArchiveBoxIcon,
   ArrowRightOnRectangleIcon,
+  BuildingStorefrontIcon,
   ClipboardIcon,
   Cog6ToothIcon,
   Squares2X2Icon,
@@ -26,6 +27,11 @@ const Sidebar = () => {
       icon: ArchiveBoxIcon,
       url: "/my-warehouse/my-products",
     },
+    {
+      name: "Store",
+      icon: BuildingStorefrontIcon,
+      url: "/",
+    },
   ];
 
   const handleLogout = () => {
@@ -37,8 +43,15 @@ const Sidebar = () => {
     dispatch(setSubSideNav(true));
   };
 
+  const onClickStore = () => {
+    dispatch(setSubSideNav(false));
+  };
+
   return (
-    <aside className="overflow-y-scroll md:overflow-hidden z-[90] overflow-x-hidden min-h-screen bg-cyan-50 dark:bg-gray-900 hidden p-5 md:flex flex-col items-center justify-between w-[10%] lg:w-[8%] xl:w-[7%] 2xl:w-[5%]">
+    <aside
+      className="overflow-y-scroll md:overflow-hidden z-[90] overflow-x-hidden min-h-screen bg-cyan-50 dark:bg-gray-900 hidden p-5 md:flex flex-col items-center justify-between 
+    min-w-[10%] max-w-[10%] lg:min-w-[8%] lg:max-w-[8%] xl:min-w-[7%] xl:max-w-[7%] 2xl:min-w-[5%] 2xl:max-w-[5%]"
+    >
       <div>
         <Link to="/my-warehouse">
           <Logo />
@@ -47,7 +60,13 @@ const Sidebar = () => {
         {/* Modules */}
         <div className="flex flex-col p-2 mt-5 space-y-5">
           {modules.map(({ name, icon, url }, i) => (
-            <NavLinkToolTip key={i} name={name} Icon={icon} url={url} />
+            <NavLinkToolTip
+              onClick={onClickStore}
+              key={i}
+              name={name}
+              Icon={icon}
+              url={url}
+            />
           ))}
         </div>
       </div>

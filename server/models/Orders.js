@@ -5,8 +5,12 @@ const orderSchema = new mongoose.Schema(
   {
     customerId: mongoose.Types.ObjectId,
     products: Array,
-    fromWarehouseId: Array,
     total: mongoose.Types.Decimal128,
+    status: {
+      type: Number,
+      default: 0,
+    },
+    deliveredOn: Date,
   },
   {
     timestamps: true,

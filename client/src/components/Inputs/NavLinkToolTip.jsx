@@ -10,6 +10,7 @@ const NavLinkToolTip = ({ url, Icon, name, onClick }) => {
           `text-gray-500 hover:bg-white hover:border-gray-300 border border-transparent rounded-md p-2 
               group dark:text-gray-200 dark:hover:bg-gray-700 dark:border-gray-900 flex justify-center ${
                 isActive &&
+                url !== "/" &&
                 "bg-white shadow-md dark:bg-gray-700 dark:border-gray-700"
               }`
         }

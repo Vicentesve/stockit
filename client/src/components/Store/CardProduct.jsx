@@ -69,7 +69,7 @@ const CardProduct = ({ product, category, warehouseId }) => {
 
           <button
             onClick={pushToCart}
-            className="flex items-center px-4 py-2 space-x-1 text-sm font-medium text-white bg-yellow-400 rounded-lg focus:outline-none hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300"
+            className=" z-[100] flex items-center px-4 py-2 space-x-1 text-sm font-medium text-white bg-yellow-400 rounded-lg focus:outline-none hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300"
           >
             <ShoppingCartIcon className="h-5" />
             <span>Add to cart</span>

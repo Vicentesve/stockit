@@ -9,11 +9,48 @@ const initialState = {
   cart: [],
   cartSize: 0,
   total: 0.0,
+  myAddresses: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
 };
+
+/**
+ * * getProductsBySearch
+ */
+export const getProductsBySearch = createAsyncThunk(
+  "/getProductsBySearch",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.getProductsBySearch(data);
+
+      return response.data;
+    } catch (error) {
+      switch (error.code) {
+        case "ERR_NETWORK":
+          toast.error("An error occurrend!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+
+          break;
+        default:
+          break;
+      }
+      const message = error.response
+        ? error.response.data.message
+        : error.message;
+
+      return rejectWithValue(message);
+    }
+  }
+);
 
 /**
  * * getProductsByCategory
@@ -123,16 +160,108 @@ export const getWarehousesPreview = createAsyncThunk(
   }
 );
 
+/**
+ * * setAddress
+ */
+export const setAddress = createAsyncThunk(
+  "/setAddress",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.setAddress(formData);
+
+      toast.success("Successful operation!", "", "success", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      return response.data;
+    } catch (error) {
+      switch (error.code) {
+        case "ERR_NETWORK":
+          toast.error("An error occurrend!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+
+          break;
+        default:
+          break;
+      }
+      const message = error.response
+        ? error.response.data.message
+        : error.message;
+
+      return rejectWithValue(message);
+    }
+  }
+);
+
+/**
+ * * setAddress
+ */
+export const getMyAddresses = createAsyncThunk(
+  "/getMyAddresses",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.getMyAddresses(id);
+
+      return response.data;
+    } catch (error) {
+      switch (error.code) {
+        case "ERR_NETWORK":
+          toast.error("An error occurrend!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+
+          break;
+        default:
+          break;
+      }
+      const message = error.response
+        ? error.response.data.message
+        : error.message;
+
+      return rejectWithValue(message);
+    }
+  }
+);
+
 export const storeSlice = createSlice({
   name: "store",
   initialState,
   reducers: {
     resetAll: () => initialState,
+    resetProducts: (state) => {
+      state.isError = false;
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.message = "";
+      state.products = [];
+    },
     reset: (state) => {
       state.isError = false;
       state.isLoading = false;
       state.isSuccess = false;
       state.message = "";
+    },
+    resetAddresses: (state) => {
+      state.myAddresses = [];
     },
     resetMsg: (state) => {
       state.message = "";
@@ -141,7 +270,6 @@ export const storeSlice = createSlice({
       state.currentCategory = action.payload;
     },
     addToCart: (state, action) => {
-      console.log(action.payload);
       const objIndex = state.cart.findIndex(
         (obj) => obj._id === action.payload?._id
       );
@@ -213,11 +341,10 @@ export const storeSlice = createSlice({
           parseFloat(newCart[objIndex].price.$numberDecimal) *
           newCart[objIndex].quantity;
         newCart.splice(objIndex, 1);
+        state.cart = newCart;
       } else {
         console.warn(`Cant remove product (id ${action.payload.id})`);
       }
-
-      state.cart = newCart;
     },
     incrementByAmount: (state, action) => {
       state.cartSize += action.payload;
@@ -274,6 +401,46 @@ export const storeSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
         state.products = null;
+      })
+      .addCase(getProductsBySearch.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(getProductsBySearch.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.products = action.payload;
+      })
+      .addCase(getProductsBySearch.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.products = null;
+      })
+      .addCase(setAddress.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(setAddress.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.myAddresses.push(action.payload);
+      })
+      .addCase(setAddress.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getMyAddresses.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(getMyAddresses.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.myAddresses = action.payload;
+      })
+      .addCase(getMyAddresses.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });
@@ -281,6 +448,7 @@ export const storeSlice = createSlice({
 export const {
   reset,
   resetAll,
+  resetProducts,
   resetMsg,
   changeCategory,
   addToCart,
@@ -291,5 +459,6 @@ export const {
   removeOneToCart,
   addOneToCart,
   removeAllFromCart,
+  resetAddresses,
 } = storeSlice.actions;
 export default storeSlice.reducer;

@@ -33,7 +33,7 @@ const LandingPage = () => {
     <div className="relative min-h-screen bg-gray-300/50">
       {isLoading ? <Spinner /> : null}
       <Header categories={categories} />
-      <HeaderMobile />
+      <HeaderMobile options={categories} />
       <Navbar categories={categories} />
       <SidebarMobile categories={categories} />
 

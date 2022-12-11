@@ -58,7 +58,12 @@ const SidebarMobile = ({ categories }) => {
 
               <ul className="mt-3 ml-4 space-y-1 border-l border-gray-300">
                 <li className="px-2 py-1">Account</li>
-                <li className="px-2 py-1">Orders</li>
+                <Link
+                  onClick={() => dispatch(setSubSideNav(false))}
+                  to="/orders"
+                >
+                  <li className="px-2 py-1">Orders</li>
+                </Link>
                 {user?.hasWarehouse ? (
                   <li className="px-2 py-1">
                     <a href="/my-warehouse">See my warehouse</a>

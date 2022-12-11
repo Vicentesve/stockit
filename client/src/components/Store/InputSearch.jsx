@@ -1,28 +1,29 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeCategory } from "../../redux/storeSlice";
+import { useNavigate } from "react-router-dom";
+import { setCategoryId, setSearch } from "../../redux/inputSearchSlice";
 
 const InputSearch = ({ options }) => {
   const dispatch = useDispatch();
-  const { currentCategory } = useSelector((state) => state.store);
+  const navigate = useNavigate();
+  const search = useSelector((state) => state.inputSearch.search);
+  const categoryId = useSelector((state) => state.inputSearch.categoryId);
 
-  const [value, setValue] = useState(currentCategory);
-
-  useEffect(() => {
-    dispatch(changeCategory(value));
-  }, [value, dispatch]);
-
-  const onChange = (e) => {
-    setValue(e.target.value);
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (categoryId === 0) {
+      navigate(`/search/all-categories/${search}`);
+    } else {
+      navigate(`/search/${categoryId}/${search}`);
+    }
   };
 
   return (
-    <form className="flex-grow ">
+    <form onSubmit={onSubmit} className="flex-grow ">
       <div className="flex">
         <select
-          value={currentCategory}
-          onChange={onChange}
+          value={categoryId}
+          onChange={(e) => dispatch(setCategoryId(e.target.value))}
           className=" z-10  py-2.5 px-4 text-sm font-medium 
         text-center text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 "
         >
@@ -38,6 +39,8 @@ const InputSearch = ({ options }) => {
           <input
             type="search"
             id="search-dropdown"
+            value={search}
+            onChange={(e) => dispatch(setSearch(e.target.value))}
             className="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-r-lg 
             border border-transparent focus:ring-yellow-300 focus:border-yellow-300"
             placeholder="Search"

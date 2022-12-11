@@ -11,6 +11,8 @@ const authRoutes = require("./routes/authRoutes");
 const warehouseRoutes = require("./routes/warehouseRoutes");
 const categorieRoutes = require("./routes/categorieRoutes");
 const orderRoutes = require("./routes/ordersRoutes");
+const statisticRoutes = require("./routes/statisticRoutes");
+const addressRoutes = require("./routes/addressRoutes");
 
 //Config dotenv
 if (process.env.NODE_ENV !== "production") {
@@ -35,6 +37,8 @@ app.use(authRoutes);
 app.use(warehouseRoutes);
 app.use(categorieRoutes);
 app.use(orderRoutes);
+app.use(statisticRoutes);
+app.use(addressRoutes);
 
 // Static files (build of your frontend)
 if (process.env.NODE_ENV === "production") {

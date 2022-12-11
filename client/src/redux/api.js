@@ -27,12 +27,16 @@ export const logout = () => localStorage.removeItem("stockit-user");
 /**
  * * Warehouse
  */
+export const getProductById = (id) => API.get(`/getProductById/${id}`);
+export const getProductsBySearch = (data) =>
+  API.get(`/getProductsBySearch/${data?.categoryId}/${data?.search}`);
 export const getProductsByWarehouse = (id) =>
   API.get(`/getProductsByWarehouse/${id}`);
 export const getProductsByCategory = (id) =>
   API.get(`/getProductsByCategory/${id}`);
 export const getWarehousesPreview = () => API.get("/getWarehousesPreview");
 export const getMyWarehouse = (id) => API.get(`/getMyWarehouse/${id}`);
+export const getMyWarehouseId = (id) => API.get(`/getMyWarehouseId/${id}`);
 export const addProduct = (_id, productData) =>
   API.post(`/warehouse/addProduct/${_id}`, productData);
 export const editProduct = (_id, productData) =>
@@ -49,5 +53,33 @@ export const getCategories = () => API.get(`/getCategories`);
  * * Orders
  */
 export const setOrder = (formData) => API.put("/setOrder", formData);
+export const getOrdersByDate = (data) =>
+  API.get(`/getOrders/${data.id}/${data.year}/${data.month}`);
+export const getMyOrders = (data) =>
+  API.get(`/getMyOrders/${data.id}/${data.startDate}/${data.finalDate}`);
+
+/**
+ * * Statistic
+ */
+export const getClientsStatistic = (data) =>
+  API.get(
+    `/getClientsStatistic/${data.id}/${data.type}/${data.firstDate}/${data.finalDate}`
+  );
+export const getProductsStatistic = (data) =>
+  API.get(
+    `/getProductsStatistic/${data.id}/${data.type}/${data.firstDate}/${data.finalDate}`
+  );
+
+/**
+ * * Countries
+ */
+export const getAllCountries = () =>
+  API.get("https://restcountries.com/v3.1/all");
+
+/**
+ * * Orders
+ */
+export const setAddress = (formData) => API.put("/setAddress", formData);
+export const getMyAddresses = (id) => API.get(`/getMyAddresses/${id}`);
 
 export default API;

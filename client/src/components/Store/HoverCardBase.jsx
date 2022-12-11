@@ -5,11 +5,12 @@ import { setHoverCard } from "../../redux/sidenavSlice";
 
 const HoverCardBase = ({ trigger, content }) => {
   const dispatch = useDispatch();
-
   return (
     <HoverCard.Root
-      onOpenChange={(e) => dispatch(setHoverCard(e))}
-      openDelay={100}
+      onOpenChange={(e) => {
+        dispatch(setHoverCard(e));
+      }}
+      openDelay={0}
       closeDelay={100}
     >
       <HoverCard.Trigger asChild>{trigger}</HoverCard.Trigger>

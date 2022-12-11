@@ -17,7 +17,11 @@ const CardWarehouses = ({ titleCard, warehouse }) => {
               <>
                 <img
                   className="object-cover h-[80%] w-full"
-                  src={warehouse[i]?.products[i]}
+                  src={
+                    warehouse[i]?.products.length > 1
+                      ? warehouse[i]?.products[i]
+                      : warehouse[i]?.products[0]
+                  }
                   alt=""
                 />
                 <p className="text-sm font-light text-center ">

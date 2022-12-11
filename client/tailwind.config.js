@@ -42,6 +42,10 @@ module.exports = {
       backgroundImage: {
         "welcome-image": "url('/public/images/warehouse_login.jpg')",
       },
+      transitionDuration: {
+        0: "0ms",
+        600: "600ms",
+      },
     },
   },
   plugins: [
@@ -49,5 +53,6 @@ module.exports = {
     Myclass,
     require("@tailwindcss/line-clamp"),
     require("tailwind-scrollbar")({ nocompatible: true }),
+    require("tailwindcss-animate"),
   ],
 };

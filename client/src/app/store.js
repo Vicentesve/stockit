@@ -5,6 +5,8 @@ import warehouseReducer from "../redux/warehouseSlice";
 import categorieReducer from "../redux/categoriesSlice";
 import storeReducer from "../redux/storeSlice";
 import orderReducer from "../redux/orderSlice";
+import statisticReducer from "../redux/statisticSlice";
+import inputSearchReducer from "../redux/inputSearchSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +16,7 @@ export const store = configureStore({
     categories: categorieReducer,
     store: storeReducer,
     order: orderReducer,
+    statistic: statisticReducer,
+    inputSearch: inputSearchReducer,
   },
 });
