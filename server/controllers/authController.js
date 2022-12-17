@@ -27,7 +27,6 @@ const handleErrors = (err) => {
 
   //Duplicate error code
   if (err.code === 11000) {
-    console.log(err.message);
     if (err.message.includes("email")) {
       errors.email = "The email entered already exists";
     }

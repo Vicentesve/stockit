@@ -77,9 +77,19 @@ export const getAllCountries = () =>
   API.get("https://restcountries.com/v3.1/all");
 
 /**
- * * Orders
+ * * Addresses
  */
-export const setAddress = (formData) => API.put("/setAddress", formData);
 export const getMyAddresses = (id) => API.get(`/getMyAddresses/${id}`);
+export const setAddress = (formData) => API.post("/setAddress", formData);
+export const editAddress = (formData) =>
+  API.put(`/editAddress/${formData._id}`, formData);
+
+/**
+ * * Payments
+ */
+export const getMyPayments = (id) => API.get(`/getMyPayments/${id}`);
+export const setPayment = (formData) => API.post("/setPayment", formData);
+export const editPayment = (formData) =>
+  API.put(`/editPayment/${formData._id}`, formData);
 
 export default API;

@@ -12,6 +12,7 @@ const MyAccount = () => {
       title: "My Payments",
       description: "View my transactions and manage payment methods",
       img: "https://m.media-amazon.com/images/G/33/x-locale/cs/help/images/gateway/self-service/payment._CB661171412_.png",
+      url: "/my-account/my-payments",
     },
     {
       title: "My Addresses",

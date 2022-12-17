@@ -55,3 +55,7 @@ dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 
     before:border-transparent before:border-b-white before:drop-shadow-hoverCard;
   }
 }
+
+.clip-your-needful-style {
+  clip-path: polygon(0 0, 100% 0%, 100% 20%, 10% 20%);
+}

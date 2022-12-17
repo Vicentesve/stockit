@@ -13,6 +13,7 @@ const categorieRoutes = require("./routes/categorieRoutes");
 const orderRoutes = require("./routes/ordersRoutes");
 const statisticRoutes = require("./routes/statisticRoutes");
 const addressRoutes = require("./routes/addressRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 
 //Config dotenv
 if (process.env.NODE_ENV !== "production") {
@@ -39,6 +40,7 @@ app.use(categorieRoutes);
 app.use(orderRoutes);
 app.use(statisticRoutes);
 app.use(addressRoutes);
+app.use(paymentRoutes);
 
 // Static files (build of your frontend)
 if (process.env.NODE_ENV === "production") {

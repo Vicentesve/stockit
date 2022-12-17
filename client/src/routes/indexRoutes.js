@@ -17,6 +17,8 @@ import Orders from "../pages/store/Orders";
 import MyAccount from "../pages/store/MyAccount";
 import MyAddresses from "../pages/store/MyAddresses";
 import NewDirection from "../pages/store/NewDirection";
+import MyPayments from "../pages/store/MyPayments";
+import NewPayment from "../pages/store/NewPayment";
 
 const routes = [
   {
@@ -31,9 +33,14 @@ const routes = [
       { path: "cart", element: <Cart /> },
       { path: "my-account", element: <MyAccount /> },
       { path: "my-account/my-addresses", element: <MyAddresses /> },
+      { path: "my-account/my-payments", element: <MyPayments /> },
       {
         path: "my-account/my-addresses/new-address",
         element: <NewDirection />,
+      },
+      {
+        path: "my-account/my-payments/new-payment",
+        element: <NewPayment />,
       },
       { path: "orders", element: <Orders /> },
     ],

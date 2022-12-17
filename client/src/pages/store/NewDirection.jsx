@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import InputField from "../../components/Inputs/InputField";
 import Select from "../../components/Inputs/Select";
-import { setAddress } from "../../redux/storeSlice";
+import { editAddress, setAddress } from "../../redux/storeSlice";
 import Spinner from "./../../components/Spinner";
 import { useLocation, useNavigate } from "react-router-dom";
 const NewDirection = () => {
@@ -22,6 +22,7 @@ const NewDirection = () => {
   });
   const user = useSelector((state) => state.auth.user);
   const isLoading = useSelector((state) => state.store.isLoading);
+  const myAddresses = useSelector((state) => state.store.myAddresses);
 
   const onSubmit = (data) => {
     if (currentCountry === "0") {
@@ -30,14 +31,19 @@ const NewDirection = () => {
     }
     data.customerId = user?._id;
     data.country = currentCountry;
-    console.log(data);
-    dispatch(setAddress(data));
+
+    if (location?.state?.isEdit) dispatch(editAddress(data));
+    else {
+      if (myAddresses.lenght <= 0) data.isDefault = true;
+      dispatch(setAddress(data));
+    }
+
     navigate("/my-account/my-addresses");
   };
 
   const [countries, setAllCountries] = useState([]);
   const [currentCountry, setCurrentCountry] = useState(
-    location?.state?.address?.country
+    location?.state?.address?.country || "0"
   );
   const [errorCountry, setErrorCountry] = useState("");
 
@@ -189,7 +195,7 @@ const NewDirection = () => {
             type="submit"
             className="p-2 my-3 text-xs border border-yellow-300 rounded-md md:text-sm bg-gradient-to-b focus:ring-2 from-yellow-200 to-yellow-400 active:from-yellow-500 focus:ring-yellow-500 hover:bg-gradient-to-b hover:from-yellow-100 hover:to-yellow-300"
           >
-            Add direction
+            {location?.state?.isEdit ? "Edit direction" : "Add direction"}
           </button>
         </form>
       </div>

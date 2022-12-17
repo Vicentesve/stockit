@@ -10,6 +10,7 @@ const initialState = {
   cartSize: 0,
   total: 0.0,
   myAddresses: [],
+  myPayments: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -207,13 +208,191 @@ export const setAddress = createAsyncThunk(
 );
 
 /**
- * * setAddress
+ * * editAddress
+ */
+export const editAddress = createAsyncThunk(
+  "/editAddress",
+  async (formData, { rejectWithValue }) => {
+    try {
+      const response = await api.editAddress(formData);
+
+      toast.success("Successful operation!", "", "success", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      return response.data;
+    } catch (error) {
+      switch (error.code) {
+        case "ERR_NETWORK":
+          toast.error("An error occurrend!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+
+          break;
+        default:
+          break;
+      }
+      const message = error.response
+        ? error.response.data.message
+        : error.message;
+
+      return rejectWithValue(message);
+    }
+  }
+);
+
+/**
+ * * getMyAddresses
  */
 export const getMyAddresses = createAsyncThunk(
   "/getMyAddresses",
   async (id, { rejectWithValue }) => {
     try {
       const response = await api.getMyAddresses(id);
+
+      return response.data;
+    } catch (error) {
+      switch (error.code) {
+        case "ERR_NETWORK":
+          toast.error("An error occurrend!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+
+          break;
+        default:
+          break;
+      }
+      const message = error.response
+        ? error.response.data.message
+        : error.message;
+
+      return rejectWithValue(message);
+    }
+  }
+);
+
+/**
+ * * getMyPayments
+ */
+export const getMyPayments = createAsyncThunk(
+  "/getMyPayments",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.getMyPayments(id);
+
+      return response.data;
+    } catch (error) {
+      switch (error.code) {
+        case "ERR_NETWORK":
+          toast.error("An error occurrend!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+
+          break;
+        default:
+          break;
+      }
+      const message = error.response
+        ? error.response.data.message
+        : error.message;
+
+      return rejectWithValue(message);
+    }
+  }
+);
+
+/**
+ * * setAddress
+ */
+export const setPayment = createAsyncThunk(
+  "/setPayment",
+  async ({ formData, navigate }, { rejectWithValue }) => {
+    try {
+      const response = await api.setPayment(formData);
+
+      toast.success("Successful operation!", "", "success", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      navigate("/my-account/my-payments");
+
+      return response.data;
+    } catch (error) {
+      switch (error.code) {
+        case "ERR_NETWORK":
+          toast.error("An error occurrend!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+
+          break;
+        default:
+          break;
+      }
+      const message = error.response
+        ? error.response.data.message
+        : error.message;
+
+      return rejectWithValue(message);
+    }
+  }
+);
+
+/**
+ * * editPayment
+ */
+export const editPayment = createAsyncThunk(
+  "/editPayment",
+  async ({ formData, navigate }, { rejectWithValue }) => {
+    try {
+      const response = await api.editPayment(formData);
+
+      toast.success("Successful operation!", "", "success", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      navigate("/my-account/my-payments");
 
       return response.data;
     } catch (error) {
@@ -262,6 +441,9 @@ export const storeSlice = createSlice({
     },
     resetAddresses: (state) => {
       state.myAddresses = [];
+    },
+    resetPayments: (state) => {
+      state.myPayments = [];
     },
     resetMsg: (state) => {
       state.message = "";
@@ -422,6 +604,7 @@ export const storeSlice = createSlice({
       .addCase(setAddress.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        state.isError = false;
         state.myAddresses.push(action.payload);
       })
       .addCase(setAddress.rejected, (state, action) => {
@@ -436,8 +619,72 @@ export const storeSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.myAddresses = action.payload;
+
+        state.myAddresses.sort(
+          (a, b) => Number(b.isDefault) - Number(a.isDefault)
+        );
       })
       .addCase(getMyAddresses.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(editAddress.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(editAddress.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+
+        if (action.payload?.isDefault) {
+          const objIndexDeafault = state.myAddresses.findIndex(
+            (obj) => obj.isDefault === true
+          );
+
+          const editCurrentDefault = { ...state.myAddresses[objIndexDeafault] };
+          editCurrentDefault.isDefault = false;
+
+          state.myAddresses[objIndexDeafault] = editCurrentDefault;
+        }
+        const objIndex = state.myAddresses.findIndex(
+          (obj) => obj._id === action.payload._id
+        );
+        state.myAddresses[objIndex] = action.payload;
+
+        state.myAddresses.sort(
+          (a, b) => Number(b.isDefault) - Number(a.isDefault)
+        );
+      })
+      .addCase(editAddress.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(setPayment.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(setPayment.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.myPayments.push(action.payload);
+      })
+      .addCase(setPayment.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getMyPayments.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(getMyPayments.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.myPayments = action.payload;
+        state.myPayments.sort(
+          (a, b) => Number(b.isDefault) - Number(a.isDefault)
+        );
+      })
+      .addCase(getMyPayments.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -460,5 +707,6 @@ export const {
   addOneToCart,
   removeAllFromCart,
   resetAddresses,
+  resetPayments,
 } = storeSlice.actions;
 export default storeSlice.reducer;

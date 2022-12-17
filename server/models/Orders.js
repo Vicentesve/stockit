@@ -11,6 +11,13 @@ const orderSchema = new mongoose.Schema(
       default: 0,
     },
     deliveredOn: Date,
+    payment: {
+      number: String,
+      name: String,
+      facturarion: String,
+      expiry: String,
+    },
+    address: String,
   },
   {
     timestamps: true,

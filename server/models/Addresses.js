@@ -13,6 +13,10 @@ const addressSchema = new mongoose.Schema(
     postalCode: String,
     phoneNumber: String,
     extraInfo: String,
+    isDefault: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
