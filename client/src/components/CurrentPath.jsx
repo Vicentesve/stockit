@@ -56,7 +56,7 @@ function CurrentPath({ arrayPath }) {
       </nav>
 
       {/* Name Page */}
-      <h2 className={`mt-5 text-4xl font-extrabold dark:text-white capitalize`}>
+      <h2 className={`my-5 text-4xl font-extrabold dark:text-white capitalize`}>
         {getLocation(window.location.pathname).replaceAll("-", " ")}
       </h2>
     </div>

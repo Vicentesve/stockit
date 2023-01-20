@@ -20,6 +20,7 @@ const InputNumberFloat = ({ id, error, value, onChange, label }) => {
           decimalSeparator="."
           prefix="$"
           placeholder=" "
+          decimalScale={2}
         />
 
         <label

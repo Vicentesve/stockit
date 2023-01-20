@@ -7,6 +7,7 @@ const MyAccount = () => {
       title: "My Orders",
       description: "Track packages, return orders or buy something again",
       img: "https://m.media-amazon.com/images/G/33/x-locale/cs/help/images/gateway/self-service/order._CB661171412_.png",
+      url: "/orders",
     },
     {
       title: "My Payments",

@@ -90,24 +90,29 @@ const Pagination = ({
   const handleMoveRight = (evt) => {
     evt.preventDefault();
 
-    goToPage(currentPage + pageNeighbours * 2 + 1);
+    // goToPage(currentPage + pageNeighbours * 2 + 1);
+    goToPage(currentPage + 1);
   };
 
   const handleMoveLeft = (evt) => {
     evt.preventDefault();
 
-    goToPage(currentPage - pageNeighbours * 2 - 1);
+    // goToPage(currentPage - pageNeighbours * 2 - 1);
+    goToPage(currentPage - 1);
   };
 
   return (
     <nav
-      className="flex items-center justify-center lg:justify-between"
+      className="flex items-center justify-center space-x-10 lg:justify-between"
       aria-label="Table navigation"
     >
       <span className="hidden text-sm font-normal text-gray-500 lg:block dark:text-gray-400">
         Showing{" "}
         <span className="font-semibold text-gray-900 dark:text-white">
-          {pageLimit * currentPage - pageLimit + 1}-{pageLimit * currentPage}
+          {pageLimit * currentPage - pageLimit + 1}-
+          {pageLimit * currentPage >= totalRecords
+            ? totalRecords
+            : pageLimit * currentPage}
         </span>{" "}
         of{" "}
         <span className="font-semibold text-gray-900 dark:text-white">

@@ -1,6 +1,7 @@
 import {
   ArchiveBoxIcon,
   ChatBubbleBottomCenterTextIcon,
+  NoSymbolIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
@@ -50,6 +51,8 @@ const Checkout = () => {
   const onSubmit = (e) => {
     e.preventDefault();
 
+    if (myAddresses.length <= 0 || myPayments.length <= 0) return;
+
     const orderToSubmit = {};
     orderToSubmit.customerId = user?._id;
     orderToSubmit.products = [...cart];
@@ -62,7 +65,7 @@ const Checkout = () => {
       expiry: selectedPayment?.expiry,
     };
     orderToSubmit.payment = payment;
-    console.log(orderToSubmit);
+    orderToSubmit.comments = comments;
 
     dispatch(setOrder(orderToSubmit));
     dispatch(removeAllFromCart());
@@ -70,7 +73,6 @@ const Checkout = () => {
 
   const [selectedAddress, setSelectedAddres] = useState(myAddresses[0]);
   const [selectedPayment, setSelectedPayment] = useState(myPayments[0]);
-
   const [comments, setComments] = useState("");
 
   useEffect(() => {
@@ -155,28 +157,49 @@ const Checkout = () => {
             <div className="p-5 overflow-x-scroll border border-gray-300 rounded-md">
               <h4 className="my-3 text-xl font-semibold">Payment Method</h4>
               <ul className="flex space-x-5">
-                {myPayments?.map((payment, i) => (
-                  <li key={i}>
-                    <input
-                      type="radio"
-                      id={payment._id}
-                      name="payment"
-                      value={i}
-                      onChange={handleChangePayment}
-                      defaultChecked={payment.isDefault ? true : false}
-                      className="hidden peer"
-                    />
-                    <label
-                      htmlFor={payment._id}
-                      className="inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
-                    >
-                      <CreditCardPreview
-                        type={payment?.issuer}
-                        number={payment?.number}
-                      />
-                    </label>
-                  </li>
-                ))}
+                {myPayments?.length <= 0 ? (
+                  <div className="p-3">
+                    <div className="flex items-center space-x-1">
+                      <div className="flex items-center space-x-2 ">
+                        <NoSymbolIcon className="h-6" />
+                        <span className="font-semibold">
+                          No payment method registered.
+                        </span>
+                      </div>
+                      <Link
+                        to="/my-account/my-payments/new-payment"
+                        className="text-sm text-blue-400 underline"
+                      >
+                        Register a new one
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {myPayments?.map((payment, i) => (
+                      <li key={i}>
+                        <input
+                          type="radio"
+                          id={payment._id}
+                          name="payment"
+                          value={i}
+                          onChange={handleChangePayment}
+                          defaultChecked={payment.isDefault ? true : false}
+                          className="hidden peer"
+                        />
+                        <label
+                          htmlFor={payment._id}
+                          className="inline-flex items-center justify-between w-full p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700"
+                        >
+                          <CreditCardPreview
+                            type={payment?.issuer}
+                            number={payment?.number}
+                          />
+                        </label>
+                      </li>
+                    ))}
+                  </>
+                )}
               </ul>
             </div>
 
@@ -238,12 +261,19 @@ const Checkout = () => {
               </li>
             </ul>
 
-            <button
-              type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full mt-5"
-            >
-              Pay {currencyFormat(total)}
-            </button>
+            {myPayments?.length <= 0 || myAddresses?.length <= 0 ? (
+              <button className="focus:ring-blue-300 font-medium  px-5 py-2.5 w-full mt-5 p-2 my-3 text-xs text-gray-300 border rounded-md cursor-not-allowed bg-gradient-to-b md:text-sm focus:ring-2 from-gray-300 to-gray-500">
+                Can not proceed
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 w-full mt-5"
+              >
+                Pay {currencyFormat(total)}
+              </button>
+            )}
+
             <p className="mt-2 text-xs font-light text-gray-400">
               By clicking the button, you agree to the{" "}
               <span className="underline">

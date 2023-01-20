@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const Warehouse = require("../models/Warehouse");
+const Orders = require("../models/Orders");
 
 /**
  * * @description Get a product by its Id
@@ -217,17 +218,13 @@ module.exports.getMyWarehouse = async (req, res) => {
       },
     ]);
 
-    /* warehouse[0]?.products?.map((product) => {
+    warehouse[0]?.products?.forEach((product) => {
       product.price = parseFloat(product.price);
-    }); */
+    });
 
     warehouse[0]?.products?.reverse();
 
-    res.status(200).json({
-      _id: warehouse[0]?._id,
-      name: warehouse[0]?.name,
-      products: warehouse[0]?.products,
-    });
+    res.status(200).json(warehouse[0]);
   } catch (error) {
     console.log(error);
     res.status(400).send({ error });
@@ -281,6 +278,8 @@ module.exports.addProduct = async (req, res) => {
     const size = warehouse.products.length;
     const product = warehouse.products[size - 1];
 
+    console.log(product);
+
     res.status(200).json({
       _id: product._id,
       image: product.image,
@@ -324,7 +323,7 @@ module.exports.editProduct = async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       category: req.body.category,
-      price: { $numberDecimal: req.body.price },
+      price: req.body.price,
     });
   } catch (error) {
     res.status(400).send({ error });
@@ -351,6 +350,100 @@ module.exports.deleteProduct = async (req, res) => {
 
     res.status(200).json(req.body);
   } catch (error) {
+    res.status(400).send({ error });
+  }
+};
+
+/**
+ * * @description Get all the orders from warehouse
+ * * @routes      GET      /warehouse/getMyOrders/:id
+ * * @access      Private
+ */
+module.exports.getMyOrders = async (req, res) => {
+  try {
+    const warehouseId = await Warehouse.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "adminId",
+          foreignField: "_id",
+          as: "admin",
+        },
+      },
+      {
+        $match: { adminId: mongoose.Types.ObjectId(req.params.id) },
+      },
+    ]).project({ _id: 1 });
+
+    const orders = await Orders.aggregate([
+      {
+        $unwind: {
+          path: "$products",
+        },
+      },
+      {
+        $match: {
+          "products.fromWarehouseId": warehouseId[0]?._id.toString(),
+        },
+      },
+      {
+        $project: {
+          "products.image": 0,
+        },
+      },
+    ]);
+
+    /* This method group the orders by id */
+    let result = [];
+    orders.reduce(function (res, value) {
+      if (!res[value._id]) {
+        const date = new Date(value.createdAt);
+        const month = date.toLocaleString("en-US", {
+          month: "short",
+        });
+        res[value._id] = {
+          _id: value._id,
+          products: [],
+          total: 0,
+          quantity: 0,
+          customerId: value.customerId,
+          status: value.status,
+          order_date: `${month} ${date.getDate()}, ${date.getFullYear()}`,
+        };
+        result.push(res[value._id]);
+      }
+      res[value._id].products.push(value.products);
+      res[value._id].quantity += value.products.quantity;
+      res[value._id].total +=
+        parseFloat(value.products.price.$numberDecimal) *
+        value.products.quantity;
+
+      return res;
+    }, {});
+
+    res.status(200).json(result.reverse());
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({ error });
+  }
+};
+
+/**
+ * * @description Change the status of an order
+ * * @routes      PUT      /warehouse/putOrderStatus/:id
+ * * @access      Private
+ */
+module.exports.putOrderStatus = async (req, res) => {
+  try {
+    console.log(req.params, req.body);
+    await Orders.findByIdAndUpdate(req.params.id, {
+      status: req.body.newStatus,
+    });
+    res
+      .status(200)
+      .json({ idOrder: req.params.id, status: req.body.newStatus });
+  } catch (error) {
+    console.log(error);
     res.status(400).send({ error });
   }
 };

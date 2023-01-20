@@ -7,7 +7,6 @@ const Accordion = ({
   isLoading,
   Icon,
   condition,
-
   selectedTitle,
   selectedContent,
   noContentTitle,
@@ -37,7 +36,7 @@ const Accordion = ({
               <button
                 type="button"
                 onClick={() => (options ? setIsOpen(!isOpen) : null)}
-                className={`flex items-center justify-between w-full  p-3 hover:bg-gray-200  ${
+                className={`flex items-center justify-between w-full hover:bg-gray-200  p-3   ${
                   isOpen
                     ? "bg-gray-200 rounded-t-md rounded-x-md"
                     : "bg-white rounded-md"
@@ -75,7 +74,7 @@ const Accordion = ({
             <button
               type="button"
               onClick={() => (options ? setIsOpen(!isOpen) : null)}
-              className={`flex items-center justify-between w-full  p-3 hover:bg-gray-200  ${
+              className={`flex items-center justify-between w-full cursor-default p-3 ${
                 isOpen
                   ? "bg-gray-200 rounded-t-md rounded-x-md"
                   : "bg-white rounded-md"
@@ -90,11 +89,11 @@ const Accordion = ({
                   </p>
                 </div>
               </div>
-              <ChevronRightIcon
+              {/* <ChevronRightIcon
                 className={`h-7 transform duration-500    ${
                   isOpen ? "rotate-90" : "rotate-0"
                 }`}
-              />
+              /> */}
             </button>
           )}
 

@@ -2,7 +2,7 @@ import React from "react";
 
 const Modal = ({ close, handleFormDelete, question }) => {
   return (
-    <div className="fixed inset-0 z-50 w-full h-full md:h-full dark">
+    <div className="fixed inset-0 z-50 w-full h-full md:h-full ">
       <div className="absolute inset-0 h-full bg-black_rgba" />
       <div className="relative top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] p-4 w-full max-w-md h-full md:h-auto">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">

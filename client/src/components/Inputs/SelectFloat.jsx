@@ -11,7 +11,7 @@ const SelectFloat = ({ options, label, value, onChange, id, error }) => {
         name={id}
         value={value}
         onChange={onChange}
-        className={`block w-full text-sm  bg-transparent py-2.5 px-0 border-0 border-b-2  outline-none appearance-none 
+        className={`block w-full text-sm  bg-transparent py-2.5  border-0 border-b-2  outline-none appearance-none 
         dark:bg-gray-800 bg-gray-50 focus:outline-none focus:ring-0  dark:placeholder-gray-400 
         ${
           error
@@ -29,7 +29,7 @@ const SelectFloat = ({ options, label, value, onChange, id, error }) => {
         </option>
         {options?.map((option) => (
           <option key={option._id} value={option._id}>
-            {option.name}
+            {option.label}
           </option>
         ))}
       </select>

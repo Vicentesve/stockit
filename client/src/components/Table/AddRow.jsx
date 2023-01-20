@@ -85,8 +85,7 @@ const AddRow = ({
 
     let dataToAdd = {};
 
-    // eslint-disable-next-line array-callback-return
-    columns.map((column) => {
+    columns.forEach((column) => {
       switch (column.type) {
         case "text":
         case "text-area":
@@ -96,7 +95,7 @@ const AddRow = ({
         case "select":
           dataToAdd[column.value] = formData[column.value].value;
           break;
-        case "number":
+        case "price":
           dataToAdd[column.value] = formData[column.value].toString();
           dataToAdd[column.value] = parseFloat(
             dataToAdd[column.value].replace("$", "").replaceAll(",", "")
@@ -135,7 +134,7 @@ const AddRow = ({
           />
         );
 
-      case "number":
+      case "price":
         return (
           <InputNumber
             id={columnItem.value}

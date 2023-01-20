@@ -2,6 +2,8 @@ import { Welcome } from "../components/Welcome";
 import LandingPage from "../pages/LandingPage";
 import LandingPageStore from "../pages/store/LandingPage";
 import Login from "../pages/Login";
+import OrdersPage from "../pages/Orders";
+
 import Signup from "../pages/Signup";
 import Warehouse from "../pages/Warehouse";
 import settingsRoutes from "./settingsRoutes";
@@ -52,7 +54,7 @@ const routes = [
     children: [
       { index: true, element: <Welcome /> },
       { path: "dashboard", element: <Dashboard /> },
-      { path: "orders", element: <p>Orders</p> },
+      { path: "orders", element: <OrdersPage /> },
       { path: "my-products", element: <Warehouse /> },
       settingsRoutes,
     ],

@@ -14,7 +14,7 @@ const Navbar = ({ categories }) => {
           key={i}
           className=" hover:underline whitespace-nowrap"
         >
-          {categorie.name}
+          {categorie.label}
         </Link>
       ))}
     </div>

@@ -30,7 +30,7 @@ module.exports = {
       },
       colors: {
         black_rgba: "rgba(0, 0, 0, 0.7)",
-        black_rgba_dark: "rgba(0, 0, 0, 0.7)",
+        black_rgba_dark: "rgba(0, 0, 0, 0.5)",
         black_rgba_card: "rgba(0, 0, 0, 0.5)",
       },
       spacing: {

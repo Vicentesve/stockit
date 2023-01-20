@@ -9,7 +9,9 @@ const OrderTable = ({
   orderId,
   deliveredOn,
   products,
+  status,
 }) => {
+  console.log(status);
   const orderPlacedOnFormat = new Date(orderPlacedOn);
   const month = orderPlacedOnFormat.toLocaleString("en-US", {
     month: "long",
@@ -54,7 +56,7 @@ const OrderTable = ({
           {deliveredOn ? (
             <h2 className="text-lg font-semibold">Delivered on 24 Nov. 2022</h2>
           ) : (
-            <StatusOrder status={0} />
+            <StatusOrder status={status} />
           )}
 
           {products?.map((product, i) => (

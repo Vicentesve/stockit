@@ -2,7 +2,7 @@ import React from "react";
 
 const NoData = ({ visible }) => {
   return (
-    <div
+    <td
       className={`text-6xl flex flex-col justify-center h-full overflow-hidden  items-center text-center p-5 sm:tracking-widest ${
         visible && "hidden"
       }`}
@@ -53,7 +53,7 @@ const NoData = ({ visible }) => {
       <small className="mt-5 font-semibold text-gray-500 dark:text-gray-400 tr">
         No data😢
       </small>
-    </div>
+    </td>
   );
 };
 

@@ -90,8 +90,7 @@ const EditableRow = ({
 
     let dataToEdit = {};
 
-    // eslint-disable-next-line array-callback-return
-    columns.map((column) => {
+    columns.forEach((column) => {
       switch (column.type) {
         case "text":
         case "text-area":
@@ -101,7 +100,7 @@ const EditableRow = ({
         case "select":
           dataToEdit[column.value] = formData[column.value].value;
           break;
-        case "number":
+        case "price":
           dataToEdit[column.value] = formData[column.value].toString();
           dataToEdit[column.value] = parseFloat(
             dataToEdit[column.value].replace("$", "").replaceAll(",", "")
@@ -113,8 +112,7 @@ const EditableRow = ({
       }
     });
 
-    //Put the id to the data to edit
-    dataToEdit._id = id;
+    dataToEdit._id = id; //Add the id to the data to edit
 
     dispatch(onSubmitEdit(dataToEdit));
     handleCancelClick();
@@ -143,7 +141,7 @@ const EditableRow = ({
           />
         );
 
-      case "number":
+      case "price":
         return (
           <InputNumber
             id={columnItem.value}

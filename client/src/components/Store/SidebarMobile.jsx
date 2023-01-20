@@ -86,7 +86,7 @@ const SidebarMobile = ({ categories }) => {
                   onClick={() => dispatch(setSubSideNav(false))}
                   to={`category/${category._id}`}
                 >
-                  {category.name}
+                  {category.label}
                 </Link>
               </li>
             ))}

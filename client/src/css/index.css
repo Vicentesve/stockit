@@ -4,10 +4,32 @@
 @tailwind utilities;
 
 @layer components {
+  .header {
+    @apply flex flex-col min-h-screen;
+  }
+
+  .row-header {
+    @apply flex-initial;
+  }
+
+  .row-content {
+    @apply flex-auto;
+  }
+
+  .row-footer {
+    @apply flex-initial;
+  }
+
   .button {
-    @apply text-gray-900  bg-white 
-  border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 
+    @apply text-gray-500  bg-white shadow-md 
+  border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-2  focus:ring-gray-200 font-semibold  rounded-lg text-sm px-5 py-2.5  
   dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700;
+  }
+
+  .button-2 {
+    @apply text-gray-500  
+    focus:outline-none hover:bg-gray-100 focus:ring-1  focus:ring-gray-200 font-semibold  rounded-lg text-sm px-5 py-2.5  
+   dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700;
   }
 
   .paginationLeft {
@@ -53,6 +75,10 @@ dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 
     @apply before:content-[''] before:absolute before:w-0 before:h-0 
     before:bottom-4/4 before:left-6.8/10 before:border-8 before:border-solid 
     before:border-transparent before:border-b-white before:drop-shadow-hoverCard;
+  }
+
+  .statusOrder {
+    @apply px-2 py-0.5 text-xs border rounded-full shadow-sm dark:text-gray-500  min-w-fit cursor-pointer w-fit;
   }
 }
 

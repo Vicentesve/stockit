@@ -9,7 +9,7 @@ const TopBar = () => {
   const sideNavState = useSelector((state) => state.sidenavState);
 
   return (
-    <div className="dark:bg-gray-800 flex items-center justify-between w-full h-[7vh] p-2 text-gray-500  sm:hidden dark:text-gray-200">
+    <div className="flex items-center justify-between flex-initial w-full p-2 text-gray-500 dark:bg-gray-800 sm:hidden dark:text-gray-200">
       <Logo nameInline isMobile />
       <Bars3Icon
         onClick={() => dispatch(setIsOpen(sideNavState.value))}

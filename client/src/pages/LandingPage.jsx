@@ -34,23 +34,15 @@ const LandingPage = () => {
 
   return (
     <div
-      className={`flex flex-col min-h-screen sm:flex-row ${
+      className={`flex flex-col h-screen sm:flex-row ${
         user?.settings?.theme === 2 ? "dark" : ""
       }`}
     >
       {isLoading ? <Spinner /> : null}
       <Sidebar />
       <FloatBar />
-
-      <div
-        className={`flex flex-col flex-grow top-0 right-0 dark:bg-gray-800 ${
-          sideNavState.value ? "fixed blur-sm" : ""
-        }`}
-      >
-        <TopBar />
-        <Outlet />
-      </div>
-
+      <TopBar />
+      <Outlet />
       <ToastContainer
         position="top-right"
         autoClose={5000}

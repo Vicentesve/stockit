@@ -25,7 +25,7 @@ const CardCategories = ({ titleCard, categories }) => {
               src={item?.image}
               alt=""
             />
-            <p className="text-sm font-light text-center ">{item?.name}</p>
+            <p className="text-sm font-light text-center ">{item?.label}</p>
           </Link>
         ))}
       </div>

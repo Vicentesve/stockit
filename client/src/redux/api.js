@@ -43,7 +43,10 @@ export const editProduct = (_id, productData) =>
   API.put(`/warehouse/editProduct/${_id}`, productData);
 export const deleteProduct = (_id, formData) =>
   API.put(`/warehouse/deleteProduct/${_id}`, formData);
-
+export const getMyOrdersFromWarehouse = (id) =>
+  API.get(`/warehouse/getMyOrders/${id}`);
+export const putOrderStatus = (data) =>
+  API.put(`/warehouse/putOrderStatus/${data.idOrder}`, data);
 /**
  * * Categories
  */

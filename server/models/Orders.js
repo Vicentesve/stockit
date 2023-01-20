@@ -18,6 +18,7 @@ const orderSchema = new mongoose.Schema(
       expiry: String,
     },
     address: String,
+    comments: String,
   },
   {
     timestamps: true,

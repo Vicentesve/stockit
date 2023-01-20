@@ -43,6 +43,7 @@ module.exports.getMyOrders = async (req, res) => {
           products: 1,
           total: 1,
           createdAt: 1,
+          status: 1,
         },
       },
       {

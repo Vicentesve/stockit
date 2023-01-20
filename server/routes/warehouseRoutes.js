@@ -11,6 +11,8 @@ const {
   getMyWarehouseId,
   getProductsBySearch,
   getProductById,
+  getMyOrders,
+  putOrderStatus,
 } = require("./../controllers/warehouseController");
 const { requireAuth } = require("../middleware/authMiddleware");
 
@@ -24,5 +26,7 @@ router.get("/getProductsBySearch/:categoryId/:search", getProductsBySearch);
 router.post("/warehouse/addProduct/:id", addProduct);
 router.put("/warehouse/editProduct/:id", editProduct);
 router.put("/warehouse/deleteProduct/:id", deleteProduct);
+router.get("/warehouse/getMyOrders/:id", getMyOrders);
+router.put("/warehouse/putOrderStatus/:id", putOrderStatus);
 
 module.exports = router;

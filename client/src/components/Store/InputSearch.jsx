@@ -30,7 +30,7 @@ const InputSearch = ({ options }) => {
           <option value={0}>All categories</option>
           {options?.map((option, i) => (
             <option key={i} value={option._id}>
-              {option.name}
+              {option.label}
             </option>
           ))}
         </select>

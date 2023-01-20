@@ -21,6 +21,7 @@ const Table = ({
   onSubmitEdit,
   onSubmitDelete,
   dataSkeleton,
+  isEditable,
 }) => {
   /* BuildFormState */
   const buildFormState = () => {
@@ -170,6 +171,7 @@ const Table = ({
     setEditModeId(null);
     setAddModeId(false);
   };
+  console.log(currentRecords);
 
   /**
    * * Function to find the category base on the id
@@ -270,7 +272,7 @@ const Table = ({
               <div className="relative border border-gray-200 rounded-lg shadow-md dark:border-gray-700">
                 <div
                   ref={divRef}
-                  className="h-[450px] xl:h-[500px] 2xl:h-[650px] overflow-auto rounded-lg scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-thumb-gray-50 dark:scrollbar-thumb-gray-700"
+                  className="h-[50px]  2xl:h-[650px] overflow-auto rounded-lg scrollbar-thumb-rounded-lg scrollbar-thin scrollbar-thumb-gray-50 dark:scrollbar-thumb-gray-700"
                 >
                   <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -284,9 +286,11 @@ const Table = ({
                             {column.label}
                           </th>
                         ))}
-                        <th scope="col" className="px-6 py-3 w-[5%]">
-                          Actions
-                        </th>
+                        {isEditable ? (
+                          <th scope="col" className="px-6 py-3 w-[5%]">
+                            Actions
+                          </th>
+                        ) : null}
                       </tr>
                     </thead>
                     <tbody>
@@ -320,6 +324,7 @@ const Table = ({
                                   handleEditClick={handleEditClick}
                                   handleDeleteClick={handleDeleteClick}
                                   onSubmitDelete={onSubmitDelete}
+                                  isEditable={isEditable}
                                 />
                               )}
                             </Fragment>
